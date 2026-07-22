@@ -32,16 +32,33 @@ const year = new Date().getFullYear();
           </ul>
         </div>
         <div>
-          <p class="site-footer__head">SOLEON</p>
+          <p class="site-footer__head">会社HP（SOLEON）</p>
           <ul>
-            <li>
-              <a href="https://soleon.jp" target="_blank" rel="noopener">
-                SOLEON 本体サイト ↗
-              </a>
-            </li>
+            <li><a href="https://soleon.jp/#company" target="_blank" rel="noopener">会社概要 ↗</a></li>
+            <li><a href="https://soleon.jp/#service" target="_blank" rel="noopener">情報システム支援</a></li>
+            <li><a href="https://soleon.jp/#service" target="_blank" rel="noopener">経営財務支援</a></li>
+            <li><a href="https://soleon.jp/#contact" target="_blank" rel="noopener">SOLEONへ問い合わせ ↗</a></li>
           </ul>
         </div>
       </nav>
+    </div>
+
+    <!-- 運営会社情報（E-E-A-T / 相互リンク） -->
+    <div class="site-footer__company">
+      <p class="site-footer__head">運営会社</p>
+      <div class="site-footer__company-body">
+        <p class="site-footer__companyname">株式会社SOLEON</p>
+        <p class="site-footer__companydesc">
+          製造業向けのDX支援・Claude Code 導入支援。情報システム支援／経営財務支援／試作支援を提供する「社外戦略室」です。会社の詳細は
+          <a href="https://soleon.jp/" target="_blank" rel="noopener">SOLEON 会社HP ↗</a>
+          をご覧ください。
+        </p>
+        <p class="site-footer__contact">
+          <a href="mailto:morita_daisuke@soleon.jp">morita_daisuke@soleon.jp</a>
+          <span aria-hidden="true">／</span>
+          <a href="tel:09085338410">090-8533-8410</a>
+        </p>
+      </div>
     </div>
 
     <div class="site-footer__bottom">
@@ -109,8 +126,47 @@ const year = new Date().getFullYear();
   .site-footer__nav a:hover {
     color: #fff;
   }
+  .site-footer__company {
+    margin-top: 2.5rem;
+    padding-top: 1.8rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .site-footer__company-body {
+    max-width: 46rem;
+  }
+  .site-footer__companyname {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.02rem;
+    color: #fff;
+    margin: 0 0 0.5rem;
+  }
+  .site-footer__companydesc {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.66);
+    margin: 0 0 0.7rem;
+  }
+  .site-footer__companydesc a {
+    color: var(--magenta-bright);
+  }
+  .site-footer__contact {
+    margin: 0;
+    font-size: 0.92rem;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .site-footer__contact a {
+    color: #fff;
+    font-family: var(--font-mono);
+  }
+  .site-footer__contact span {
+    color: rgba(255, 255, 255, 0.35);
+  }
   .site-footer__bottom {
-    margin-top: 3rem;
+    margin-top: 2.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid rgba(255, 255, 255, 0.12);
     display: flex;
