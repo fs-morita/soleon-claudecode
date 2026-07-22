@@ -1,0 +1,301 @@
+---
+/**
+ * DxCheck — バックエンド不要のクライアント側だけで完結する製造業DX成熟度診断。
+ * 6問に回答 → スコア算出 → タイプ別の結果とコメント → 問い合わせCTA。
+ */
+
+const questions = [
+  {
+    q: '日々の繰り返し業務（集計・転記・書類作成など）のうち、手作業で行っているものはどのくらいありますか？',
+    options: [
+      { label: 'ほとんど手作業', score: 0 },
+      { label: '半分くらいは手作業', score: 1 },
+      { label: '多くは自動化・仕組み化済み', score: 2 },
+    ],
+  },
+  {
+    q: '特定の業務が「あの人しかできない」状態（属人化）になっていますか？',
+    options: [
+      { label: '多くの業務が属人化している', score: 0 },
+      { label: '一部は属人化している', score: 1 },
+      { label: '手順化・共有ができている', score: 2 },
+    ],
+  },
+  {
+    q: '生産・在庫・品質などのデータは、活用しやすい形で整理されていますか？',
+    options: [
+      { label: '紙やバラバラのExcelが中心', score: 0 },
+      { label: 'Excel等にはあるが集計は手作業', score: 1 },
+      { label: 'すぐ集計・分析できる状態', score: 2 },
+    ],
+  },
+  {
+    q: '社内にIT・システムに詳しい人材はいますか？',
+    options: [
+      { label: 'ほぼいない', score: 0 },
+      { label: '兼任で少しいる', score: 1 },
+      { label: '専任またはチームがある', score: 2 },
+    ],
+  },
+  {
+    q: 'これまでにITツールやシステムの導入を試したことがありますか？',
+    options: [
+      { label: 'ない、または定着しなかった', score: 0 },
+      { label: '一部で使っている', score: 1 },
+      { label: '複数の業務で活用できている', score: 2 },
+    ],
+  },
+  {
+    q: 'AI（ChatGPTやClaudeなど）を業務で使ったことはありますか？',
+    options: [
+      { label: 'ない', score: 0 },
+      { label: '個人的に少し試した程度', score: 1 },
+      { label: '業務で日常的に使っている', score: 2 },
+    ],
+  },
+];
+
+// スコア帯ごとの結果タイプ（最大 12 点）
+const results = [
+  {
+    min: 0,
+    max: 4,
+    type: 'これから型',
+    headline: 'DXはこれから。まずは小さな一歩から始めましょう',
+    comment:
+      '手作業や属人化が多く残っている段階です。裏を返せば、効率化できる「伸びしろ」が最も大きい状態でもあります。いきなり大きなシステムを入れる必要はありません。毎日・毎週くり返している業務を一つ選び、そこを自動化するスモールスタートが最適です。',
+  },
+  {
+    min: 5,
+    max: 8,
+    type: '芽生え型',
+    headline: '効率化の素地あり。仕組み化で一段上へ',
+    comment:
+      '一部で効率化や仕組み化が進みつつある段階です。データはあるものの集計は手作業、といった「あと一歩」の業務が残っていませんか。そうした業務は、Claude Code などの AI を使えば比較的短期間で自動化でき、成果を実感しやすいポイントです。',
+  },
+  {
+    min: 9,
+    max: 12,
+    type: '推進型',
+    headline: 'DXの土台あり。AIで一気に加速できます',
+    comment:
+      'データ整理や仕組み化が進み、AI活用にも前向きな段階です。次のステージは、個別の効率化を組み合わせて「現場が自分で改善を回せる」状態をつくること。Claude Code を活用すれば、専用システムを買わずに自社仕様のツールを機動的に整備できます。',
+  },
+];
+---
+
+<div class="dxcheck" id="dxcheck">
+  <!-- 質問パート -->
+  <form class="dxcheck__quiz">
+    <ol class="dxcheck__list">
+      {
+        questions.map((item, qi) => (
+          <li class="dxcheck__q card">
+            <p class="dxcheck__qtext">
+              <span class="dxcheck__qnum">Q{qi + 1}</span>
+              {item.q}
+            </p>
+            <div class="dxcheck__options">
+              {item.options.map((opt) => (
+                <label class="dxcheck__opt">
+                  <input
+                    type="radio"
+                    name={`q${qi}`}
+                    value={opt.score}
+                    data-q={qi}
+                  />
+                  <span>{opt.label}</span>
+                </label>
+              ))}
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="dxcheck__actions">
+      <button type="submit" class="btn btn--primary">診断結果をみる</button>
+      <p class="dxcheck__hint muted" role="status" aria-live="polite"></p>
+    </div>
+  </form>
+
+  <!-- 結果パート -->
+  <div class="dxcheck__result" hidden>
+    <span class="eyebrow">診断結果</span>
+    <p class="dxcheck__score">
+      スコア <strong data-score>0</strong> / 12 ・
+      タイプ：<strong data-type class="dxcheck__type"></strong>
+    </p>
+    <h3 data-headline class="dxcheck__headline"></h3>
+    <p data-comment class="muted"></p>
+
+    <div class="dxcheck__cta card">
+      <p>
+        診断はあくまで目安です。<strong>「自社の場合、何から手をつけるべきか」</strong>を、
+        具体的な業務にあわせて一緒に整理しませんか。ご相談は無料です。
+      </p>
+      <div class="dxcheck__cta-actions">
+        <a href="/#contact" class="btn btn--primary">詳しく相談する</a>
+        <a href="/blog" class="btn btn--ghost">活用事例を読む</a>
+      </div>
+    </div>
+
+    <button type="button" class="dxcheck__retry" data-retry>
+      もう一度診断する
+    </button>
+  </div>
+</div>
+
+<style>
+  .dxcheck__list {
+    list-style: none;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .dxcheck__q {
+    display: grid;
+    gap: 1rem;
+  }
+  .dxcheck__qtext {
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+  .dxcheck__qnum {
+    display: inline-block;
+    color: var(--accent);
+    font-weight: 700;
+    margin-right: 0.5rem;
+  }
+  .dxcheck__options {
+    display: grid;
+    gap: 0.5rem;
+  }
+  @media (min-width: 640px) {
+    .dxcheck__options {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .dxcheck__opt {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .dxcheck__opt:hover {
+    border-color: var(--accent);
+  }
+  .dxcheck__opt:has(input:checked) {
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+  .dxcheck__opt input {
+    accent-color: var(--accent);
+    flex: 0 0 auto;
+  }
+  .dxcheck__actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .dxcheck__hint {
+    margin: 0;
+    font-size: 0.88rem;
+  }
+
+  .dxcheck__score {
+    font-size: 1rem;
+    color: var(--muted);
+  }
+  .dxcheck__score strong {
+    color: var(--fg);
+  }
+  .dxcheck__type {
+    color: var(--accent);
+  }
+  .dxcheck__headline {
+    margin: 0.3rem 0 0.8rem;
+  }
+  .dxcheck__cta {
+    margin-top: 1.5rem;
+  }
+  .dxcheck__cta p {
+    margin-top: 0;
+  }
+  .dxcheck__cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+  .dxcheck__retry {
+    margin-top: 1.5rem;
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.88rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .dxcheck__retry:hover {
+    color: var(--fg);
+  }
+</style>
+
+<script
+  is:inline
+  define:vars={{
+    resultBands: results,
+    totalQuestions: questions.length,
+  }}
+>
+  const root = document.getElementById('dxcheck');
+  if (root) {
+    const form = root.querySelector('.dxcheck__quiz');
+    const resultEl = root.querySelector('.dxcheck__result');
+    const hint = root.querySelector('.dxcheck__hint');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const checked = form.querySelectorAll('input[type="radio"]:checked');
+      if (checked.length < totalQuestions) {
+        hint.textContent = `すべての設問（${totalQuestions}問）にお答えください。`;
+        return;
+      }
+      hint.textContent = '';
+
+      let score = 0;
+      checked.forEach((el) => (score += Number(el.value)));
+
+      const band =
+        resultBands.find((b) => score >= b.min && score <= b.max) ??
+        resultBands[resultBands.length - 1];
+
+      resultEl.querySelector('[data-score]').textContent = String(score);
+      resultEl.querySelector('[data-type]').textContent = band.type;
+      resultEl.querySelector('[data-headline]').textContent = band.headline;
+      resultEl.querySelector('[data-comment]').textContent = band.comment;
+
+      form.hidden = true;
+      resultEl.hidden = false;
+      resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    root.querySelector('[data-retry]')?.addEventListener('click', () => {
+      form.reset();
+      resultEl.hidden = true;
+      form.hidden = false;
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+</script>

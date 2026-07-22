@@ -1,0 +1,81 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { jp } from '../../lib/jp';
+
+const articles = (
+  await getCollection('articles', ({ data }) => data.draft !== true)
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// カテゴリ別にも見せる
+const categories = ['入門', '実装事例'] as const;
+---
+
+<BaseLayout
+  title="製造業 Claude Code 活用事例集 | SOLEON"
+  description="製造業のDXを進めるための Claude Code / AI 活用事例と入門記事。生産管理のExcel集計、図面PDFの情報抽出、日報自動生成、在庫管理ツールなど、現場ですぐ試せる実装ガイドを掲載しています。"
+>
+  <section class="section">
+    <div class="container">
+      <header class="page-head">
+        <span class="eyebrow">Blog</span>
+        <h1 class="jp" set:html={jp('ブログ｜製造業 Claude Code 活用事例集')} />
+        <p
+          class="lead jp"
+          set:html={jp(
+            '製造業のDXを「小さく始めて確実に効果を出す」ための、Claude Code 導入・活用のノウハウと実装ガイド。すべて再現可能なシナリオとして書いています。'
+          )}
+        />
+      </header>
+
+      {
+        categories.map((cat) => {
+          const items = articles.filter((a) => a.data.category === cat);
+          if (items.length === 0) return null;
+          return (
+            <div class="articles-group">
+              <h2 class="articles-group__title">
+                {cat}
+                <span class="muted articles-group__count">
+                  {items.length}記事
+                </span>
+              </h2>
+              <div class="grid grid--3">
+                {items.map((article) => (
+                  <ArticleCard article={article} />
+                ))}
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    max-width: 44rem;
+    margin-bottom: 3rem;
+  }
+  .page-head h1 {
+    margin: 0 0 1rem;
+  }
+  .articles-group {
+    margin-bottom: 3.5rem;
+  }
+  .articles-group__title {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    font-size: 1.35rem;
+    margin: 0 0 1.4rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .articles-group__count {
+    font-size: 0.85rem;
+    font-weight: 400;
+  }
+</style>

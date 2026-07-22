@@ -1,0 +1,90 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+import Thumbnail from './Thumbnail.astro';
+import { jp } from '../lib/jp';
+
+export interface Props {
+  article: CollectionEntry<'articles'>;
+}
+const { article } = Astro.props;
+const { data, id } = article;
+---
+
+<a href={`/blog/${id}`} class="article-card">
+  <div class="article-card__cover">
+    <Thumbnail title={data.title} category={data.category} />
+  </div>
+  <div class="article-card__body">
+    <div class="article-card__meta">
+      <span class="chip chip--accent">{data.category}</span>
+      <FormattedDate date={data.pubDate} />
+    </div>
+    <h3 class="article-card__title jp" set:html={jp(data.title)} />
+    <p class="article-card__desc muted jp" set:html={jp(data.description)} />
+    <span class="article-card__more">続きを読む →</span>
+  </div>
+</a>
+
+<style>
+  .article-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: var(--fg);
+    background: var(--bg-elev);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .article-card:hover {
+    color: var(--fg);
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+    box-shadow: var(--shadow-md);
+  }
+  .article-card__cover {
+    aspect-ratio: 1200 / 630;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border-soft);
+    background: #0e1118;
+  }
+  .article-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 1.4rem;
+    flex: 1;
+  }
+  .article-card__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .article-card__title {
+    font-size: 1.08rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+  .article-card__desc {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .article-card__more {
+    margin-top: auto;
+    padding-top: 0.3rem;
+    color: var(--accent-strong);
+    font-family: var(--font-display);
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+</style>

@@ -1,0 +1,92 @@
+---
+/**
+ * BaseHead — 全ページ共通の <head> 内 SEO / OGP / JSON-LD。
+ * Organization 構造化データは全ページ共通で出力する。
+ */
+export interface Props {
+  title: string;
+  description: string;
+  /** OGP 画像（サイトルート相対 or 絶対URL）。未指定はデフォルト og 画像 */
+  image?: string;
+  /** 'website' | 'article' */
+  type?: 'website' | 'article';
+  /** 追加で <head> に差し込みたい JSON-LD 文字列（記事の Article など） */
+  jsonLd?: string;
+}
+
+const {
+  title,
+  description,
+  image = '/og-default.svg',
+  type = 'website',
+  jsonLd,
+} = Astro.props;
+
+const SITE_NAME = 'SOLEON | 製造業向け Claude Code 活用事例集';
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const imageURL = new URL(image, Astro.site);
+
+// 全ページ共通の Organization 構造化データ
+const orgJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: '株式会社SOLEON',
+  alternateName: 'SOLEON',
+  url: 'https://claudecode.soleon.jp',
+  description:
+    '製造業向けのDX支援・Claude Code / AI活用支援を行う「社外戦略室」。',
+  sameAs: ['https://soleon.jp'],
+};
+---
+
+<!-- 基本 -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<!-- Brand fonts: Manrope(display) + Noto Sans JP(sans)（soleon.jp 準拠） -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+/>
+
+<meta name="theme-color" content="#f5f3ee" />
+
+<!-- Canonical -->
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Primary meta -->
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+
+<!-- Open Graph -->
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imageURL} />
+<meta property="og:locale" content="ja_JP" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageURL} />
+
+<!-- JSON-LD: Organization（全ページ共通） -->
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(orgJsonLd)}
+/>
+
+<!-- JSON-LD: ページ固有（記事の Article など） -->
+{jsonLd && <script type="application/ld+json" set:html={jsonLd} />}

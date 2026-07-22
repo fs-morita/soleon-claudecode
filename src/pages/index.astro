@@ -1,0 +1,724 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import ContactForm from '../components/ContactForm.astro';
+import FeatureIcon from '../components/FeatureIcon.astro';
+import { jp } from '../lib/jp';
+
+const latest = (
+  await getCollection('articles', ({ data }) => data.draft !== true)
+)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const problems = [
+  {
+    title: '慢性的な人手不足',
+    body: '限られた人数で日々の生産に追われ、業務改善やDXに手が回らない。',
+    name: 'lucide:users-round',
+  },
+  {
+    title: '業務の属人化',
+    body: '「あの人しかできない」作業が多く、引き継ぎや標準化が進まない。',
+    name: 'lucide:user-round-cog',
+  },
+  {
+    title: 'IT人材の不在',
+    body: '社内に詳しい人がおらず、高額なシステム投資にも踏み切れない。',
+    name: 'lucide:code-xml',
+  },
+];
+
+// Claude Code 導入支援の進め方
+const steps = [
+  {
+    no: '01',
+    title: '無料相談・DX診断',
+    body: '現場の業務をヒアリングし、Claude Codeで自動化できそうな「最初の一歩」を一緒に見つけます。',
+  },
+  {
+    no: '02',
+    title: '環境の準備・初期設定',
+    body: 'Claudeの有料プランやVS Codeなど、必要な環境のセットアップを支援。最初の30分の壁を越えます。',
+  },
+  {
+    no: '03',
+    title: '小さく作って試す',
+    body: '選んだ業務を実際にClaude Codeで自動化。動くものを見ながら、現場の使い勝手に合わせて調整します。',
+  },
+  {
+    no: '04',
+    title: '定着・内製化の伴走',
+    body: '現場だけで日常運用できる状態へ。使いこなしのコツを共有し、次の対象業務へと横展開します。',
+  },
+];
+
+const useCases = [
+  {
+    title: 'Excel集計・可視化',
+    body: '生産実績や日々の記録を、毎月自動で集計してグラフ化。手作業の転記をなくします。',
+    href: '/blog/03-excel-production-aggregation',
+    name: 'lucide:bar-chart-3',
+  },
+  {
+    title: 'PDF・図面からの情報抽出',
+    body: '図面や仕様書PDFから、寸法・型番・材質などを自動で拾って一覧化します。',
+    href: '/blog/04-pdf-drawing-extraction',
+    name: 'lucide:file-text',
+  },
+  {
+    title: '日報・報告書の自動生成',
+    body: '入力を最小限にして、定型の日報・報告書をテンプレートから自動作成します。',
+    href: '/blog/05-daily-report-generation',
+    name: 'lucide:clipboard-list',
+  },
+  {
+    title: '自社仕様の小さなツール',
+    body: '在庫管理など、市販ソフトでは過剰な業務を、自分たちの使い方に合わせて自作します。',
+    href: '/blog/06-inventory-tool',
+    name: 'lucide:blocks',
+  },
+];
+---
+
+<BaseLayout
+  title="製造業の Claude Code 導入支援 | SOLEON"
+  description="株式会社SOLEONは製造業向けの Claude Code 導入支援サービス。AIに日本語で指示するだけで現場の繰り返し業務を自動化。診断・環境構築・現場定着まで「社外戦略室」として伴走します。活用事例集と無料DX診断を公開中。"
+>
+  <!-- 1. ヒーロー -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <div class="hero__copy">
+        <span class="eyebrow">製造業向け Claude Code 導入支援</span>
+        <h1
+          class="hero__title jp"
+          set:html={jp(
+            'AIに「日本語で頼む」だけ。<span class="hero__accent">製造業のDX</span>を、小さく始めて確実に。'
+          )}
+        />
+        <p
+          class="hero__lead jp"
+          set:html={jp(
+            '高額なシステムも、社内のIT人材も要りません。SOLEONは <strong>Claude Code の導入支援</strong> を通じて、現場の繰り返し業務を一つずつ自動化。製造業の「社外戦略室」として、診断から定着まで伴走します。'
+          )}
+        />
+        <div class="hero__actions">
+          <a href="/check" class="btn btn--primary">無料でDX診断</a>
+          <a href="/#contact" class="btn btn--ghost">導入を相談する</a>
+        </div>
+        <ul class="hero__badges">
+          <li>✓ プログラミング不要</li>
+          <li>✓ 小さく低リスクで開始</li>
+          <li>✓ 現場定着まで伴走</li>
+        </ul>
+      </div>
+
+      <!-- 生成ビジュアル: Claude Code の操作イメージ -->
+      <div class="hero__visual" aria-hidden="true">
+        <div class="ccwin">
+          <div class="ccwin__bar">
+            <span class="ccwin__dot"></span>
+            <span class="ccwin__dot"></span>
+            <span class="ccwin__dot"></span>
+            <span class="ccwin__title">Claude Code</span>
+          </div>
+          <div class="ccwin__body">
+            <div class="ccwin__msg ccwin__msg--user">
+              <span class="ccwin__who">あなた</span>
+              生産実績のExcelを毎月集計して、グラフにして
+            </div>
+            <div class="ccwin__msg ccwin__msg--ai">
+              <span class="ccwin__who ccwin__who--ai">Claude</span>
+              集計スクリプトを作成しました。実行します 👍
+            </div>
+            <div class="ccwin__chart">
+              <span style="height:38%"></span>
+              <span style="height:62%"></span>
+              <span style="height:48%"></span>
+              <span style="height:80%"></span>
+              <span style="height:66%"></span>
+              <span style="height:92%"></span>
+            </div>
+            <div class="ccwin__done">✓ 2025年上期_生産実績.xlsx を集計・可視化しました</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 課題提起 -->
+  <section class="section section--alt">
+    <div class="container">
+      <header class="block-head">
+        <span class="eyebrow">Challenges</span>
+        <h2 class="jp" set:html={jp('製造業がDXでつまずく、3つの壁')} />
+        <p
+          class="lead jp"
+          set:html={jp(
+            '多くの現場が「やった方がいいのは分かっているが、進められない」という状態に置かれています。'
+          )}
+        />
+      </header>
+      <div class="grid grid--3">
+        {
+          problems.map((p) => (
+            <div class="card problem">
+              <FeatureIcon name={p.name} />
+              <h3 class="problem__title jp" set:html={jp(p.title)} />
+              <p class="muted problem__body jp" set:html={jp(p.body)} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 提供価値 -->
+  <section class="section">
+    <div class="container">
+      <div class="value">
+        <div class="value__text">
+          <FeatureIcon name="lucide:handshake" size={88} />
+          <span class="eyebrow">Our Value</span>
+          <h2 class="jp" set:html={jp('SOLEONは、製造業の「社外戦略室」です')} />
+          <p
+            class="jp"
+            set:html={jp(
+              '大きなシステム刷新ではなく、日々の業務にある「毎回手作業でやっている小さな面倒」を一つずつ。<strong>Claude Code の導入支援</strong>を通じて現場の業務を小さく自動化し、成功体験を積み重ねながらDXを根づかせます。'
+            )}
+          />
+          <p
+            class="muted jp"
+            set:html={jp(
+              'どの業務から手をつけるべきかの見極めから、環境構築・実装・効果検証・現場定着までを、外部の戦略室として伴走。専任のIT担当がいない現場でも、無理なく続けられる形を一緒に作ります。'
+            )}
+          />
+          <a href="/#contact" class="btn btn--ghost value__cta">相談してみる</a>
+        </div>
+        <ul class="value__points">
+          <li>
+            <FeatureIcon name="lucide:sprout" size={44} />
+            <div>
+              <strong>小さく始める</strong>
+              <span class="muted"
+                >繰り返し業務を1つ選び、低リスクで自動化。効果を見て次へ。</span
+              >
+            </div>
+          </li>
+          <li>
+            <FeatureIcon name="lucide:wrench" size={44} />
+            <div>
+              <strong>買わずに作る</strong>
+              <span class="muted"
+                >高価なパッケージではなく、自社業務に合った道具をClaude Codeで用意。</span
+              >
+            </div>
+          </li>
+          <li>
+            <FeatureIcon name="lucide:refresh-cw" size={44} />
+            <div>
+              <strong>現場が回せる形に</strong>
+              <span class="muted"
+                >導入して終わりではなく、現場だけで日常運用できる状態を目指す。</span
+              >
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Claude Code 導入支援の進め方 -->
+  <section class="section section--alt">
+    <div class="container">
+      <header class="block-head block-head--center">
+        <span class="eyebrow">How we support</span>
+        <h2 class="jp" set:html={jp('Claude Code 導入支援の進め方')} />
+        <p
+          class="lead jp"
+          set:html={jp(
+            '「試したいけど何から」で止まらないよう、SOLEONが4つのステップで伴走します。'
+          )}
+        />
+      </header>
+      <div class="steps">
+        {
+          steps.map((s) => (
+            <div class="step">
+              <span class="step__no">{s.no}</span>
+              <h3 class="step__title jp" set:html={jp(s.title)} />
+              <p class="step__body muted jp" set:html={jp(s.body)} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Claude Codeでできること -->
+  <section class="section">
+    <div class="container">
+      <header class="block-head">
+        <span class="eyebrow">What you can do</span>
+        <h2 class="jp" set:html={jp('Claude Code で、こんな業務が自動化できます')} />
+        <p
+          class="lead jp"
+          set:html={jp(
+            '「専用ソフトを買うほどではないが、手作業だと地味に時間がかかる」業務が主な対象です。'
+          )}
+        />
+      </header>
+      <div class="grid grid--4">
+        {
+          useCases.map((u) => (
+            <a href={u.href} class="card usecase">
+              <FeatureIcon name={u.name} />
+              <h3 class="usecase__title jp" set:html={jp(u.title)} />
+              <p class="muted usecase__body jp" set:html={jp(u.body)} />
+              <span class="usecase__more">事例を見る →</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. 最新ブログ抜粋 -->
+  <section class="section section--alt">
+    <div class="container">
+      <header class="block-head block-head--row">
+        <div>
+          <span class="eyebrow">Blog</span>
+          <h2 class="jp" set:html={jp('最新の活用事例・ノウハウ')} />
+        </div>
+        <a href="/blog" class="btn btn--ghost">ブログをすべて見る</a>
+      </header>
+      <div class="grid grid--3">
+        {latest.map((article) => <ArticleCard article={article} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. DX診断誘導バナー -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-banner">
+        <div class="cta-banner__text">
+          <h2 class="jp" set:html={jp('まずは、自社の「現在地」を知ることから')} />
+          <p
+            class="jp"
+            set:html={jp(
+              '6つの設問に答えるだけの無料診断で、DXの成熟度とタイプが分かります。次に取り組むべき一歩もご提案します。'
+            )}
+          />
+        </div>
+        <a href="/check" class="btn btn--primary cta-banner__btn"
+          >無料でDX診断をはじめる</a
+        >
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. 問い合わせフォーム -->
+  <section class="section" id="contact">
+    <div class="container container--narrow">
+      <header class="block-head block-head--center">
+        <span class="eyebrow">Contact</span>
+        <h2 class="jp" set:html={jp('お問い合わせ')} />
+        <p
+          class="lead jp"
+          style="margin-inline:auto;"
+          set:html={jp(
+            '「何から始めるべきか分からない」という段階でも大丈夫です。Claude Code の導入について、自社の業務に合わせて一緒に整理します。ご相談は無料です。'
+          )}
+        />
+      </header>
+      <ContactForm />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ===== Hero ===== */
+  .hero {
+    position: relative;
+    padding-block: clamp(3rem, 8vw, 6rem);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        50% 60% at 85% 10%,
+        rgba(220, 2, 120, 0.1),
+        transparent 70%
+      ),
+      radial-gradient(40% 50% at 0% 100%, rgba(220, 2, 120, 0.06), transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: clamp(2rem, 5vw, 3.5rem);
+    align-items: center;
+  }
+  @media (min-width: 940px) {
+    .hero__inner {
+      grid-template-columns: 1.05fr 0.95fr;
+    }
+  }
+  .hero__title {
+    margin: 0 0 1.3rem;
+    line-height: 1.24;
+  }
+  /* set:html で挿入されるためスコープ外。:global で色を効かせる */
+  :global(.hero__accent) {
+    color: var(--magenta);
+    font-weight: inherit;
+  }
+  .hero__lead {
+    font-size: 1.14rem;
+    color: var(--ink-soft);
+    max-width: 38rem;
+    margin-bottom: 2rem;
+    line-height: 1.95;
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+  .hero__badges {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.4rem;
+    padding: 0;
+    margin: 1.6rem 0 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .hero__badges li {
+    white-space: nowrap;
+  }
+
+  /* Claude Code 風ウィンドウ */
+  .hero__visual {
+    perspective: 1400px;
+  }
+  .ccwin {
+    background: #14171c;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(11, 13, 15, 0.28), var(--shadow-accent);
+    transform: rotateY(-6deg) rotateX(2deg);
+    transform-origin: center;
+  }
+  @media (max-width: 940px) {
+    .ccwin {
+      transform: none;
+      max-width: 460px;
+      margin-inline: auto;
+    }
+  }
+  .ccwin__bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 0.9rem;
+    background: #1c2026;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+  .ccwin__dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #3a3f47;
+  }
+  .ccwin__dot:nth-child(1) {
+    background: #ff5f57;
+  }
+  .ccwin__dot:nth-child(2) {
+    background: #febc2e;
+  }
+  .ccwin__dot:nth-child(3) {
+    background: #28c840;
+  }
+  .ccwin__title {
+    margin-left: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .ccwin__body {
+    padding: 1.2rem;
+    display: grid;
+    gap: 0.8rem;
+  }
+  .ccwin__msg {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    padding: 0.7rem 0.9rem;
+    border-radius: 10px;
+    color: #e8eaed;
+  }
+  .ccwin__msg--user {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .ccwin__msg--ai {
+    background: rgba(220, 2, 120, 0.14);
+    border: 1px solid rgba(220, 2, 120, 0.3);
+  }
+  .ccwin__who {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.45);
+    margin-bottom: 0.2rem;
+  }
+  .ccwin__who--ai {
+    color: var(--magenta-bright);
+  }
+  .ccwin__chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 90px;
+    padding: 0.8rem 0.9rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+  }
+  .ccwin__chart span {
+    flex: 1;
+    background: linear-gradient(var(--magenta-bright), var(--magenta));
+    border-radius: 3px 3px 0 0;
+    min-height: 6px;
+  }
+  .ccwin__done {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: #28c840;
+  }
+
+  /* ===== Block heads ===== */
+  .block-head {
+    max-width: 60rem; /* 見出しが1行で収まりやすいよう広めに */
+    margin-bottom: 2.5rem;
+  }
+  .block-head h2 {
+    margin: 0 0 0.9rem;
+  }
+  .block-head .lead {
+    max-width: 42rem;
+  }
+  .block-head--center {
+    margin-inline: auto;
+    text-align: center;
+  }
+  .block-head--center .eyebrow {
+    justify-content: center;
+  }
+  .block-head--center .lead {
+    margin-inline: auto;
+  }
+  .block-head--row {
+    max-width: none;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .block-head--row h2 {
+    margin-bottom: 0;
+  }
+
+  /* Problem cards */
+  .problem {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .problem :global(.feature-icon) {
+    margin-bottom: 1rem;
+  }
+  .problem__title {
+    margin: 0 0 0.6rem;
+    font-size: 1.1rem;
+  }
+  .problem__body {
+    margin: 0;
+    font-size: 0.92rem;
+  }
+
+  /* Value */
+  .value {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  @media (min-width: 860px) {
+    .value {
+      grid-template-columns: 1.2fr 1fr;
+      gap: 3.5rem;
+    }
+  }
+  .value__text :global(.feature-icon) {
+    margin-bottom: 1.2rem;
+  }
+  .value__text h2 {
+    margin: 0 0 1.2rem;
+  }
+  .value__cta {
+    margin-top: 0.8rem;
+  }
+  .value__points {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .value__points li {
+    background: var(--white);
+    border: 1px solid var(--border-soft);
+    border-left: 4px solid var(--magenta);
+    border-radius: var(--radius-sm);
+    padding: 1.1rem 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .value__points li > div {
+    display: grid;
+    gap: 0.2rem;
+  }
+  .value__points strong {
+    display: block;
+    font-size: 1.02rem;
+  }
+  .value__points span {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  /* Steps */
+  .steps {
+    display: grid;
+    gap: 1.4rem;
+  }
+  @media (min-width: 640px) {
+    .steps {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 980px) {
+    .steps {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .step {
+    position: relative;
+    background: var(--white);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    padding: 1.6rem 1.4rem 1.5rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .step__no {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--white);
+    background: var(--magenta);
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-accent);
+  }
+  .step__title {
+    margin: 0 0 0.5rem;
+    font-size: 1.08rem;
+  }
+  .step__body {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  /* Use cases */
+  .usecase {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    color: var(--fg);
+  }
+  .usecase:hover {
+    color: var(--fg);
+  }
+  .usecase__title {
+    margin: 0;
+    font-size: 1.05rem;
+  }
+  .usecase__body {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .usecase__more {
+    margin-top: auto;
+    padding-top: 0.4rem;
+    color: var(--accent-strong);
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  /* CTA banner */
+  .cta-banner {
+    background: linear-gradient(135deg, #dc0278, #8a0f57);
+    border-radius: var(--radius);
+    padding: clamp(2rem, 5vw, 3.2rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+    box-shadow: var(--shadow-accent);
+  }
+  .cta-banner__text h2 {
+    margin: 0 0 0.7rem;
+    font-size: 1.6rem;
+    color: #fff;
+  }
+  .cta-banner__text p {
+    margin: 0;
+    max-width: 36rem;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .cta-banner__btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    background: #fff;
+    color: var(--magenta);
+    border-color: #fff;
+  }
+  .cta-banner__btn:hover {
+    background: #fff;
+    color: var(--magenta-strong);
+    border-color: #fff;
+  }
+</style>

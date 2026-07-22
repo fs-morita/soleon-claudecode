@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="ページが見つかりません | SOLEON"
+  description="お探しのページは見つかりませんでした。"
+>
+  <section class="section">
+    <div class="container container--narrow" style="text-align:center;">
+      <span class="eyebrow">404</span>
+      <h1>ページが見つかりません</h1>
+      <p class="lead" style="margin-inline:auto;">
+        お探しのページは移動または削除された可能性があります。
+      </p>
+      <div
+        style="display:flex;gap:0.7rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;"
+      >
+        <a href="/" class="btn btn--primary">ホームへ戻る</a>
+        <a href="/blog" class="btn btn--ghost">活用事例を見る</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

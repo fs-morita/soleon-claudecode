@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7f6f2"/>
+      <stop offset="1" stop-color="#ece6dc"/>
+    </linearGradient>
+    <pattern id="dots" width="34" height="34" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="2.2" fill="rgba(220,2,120,0.10)"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  <rect x="0" y="0" width="14" height="630" fill="#dc0278"/>
+  <g transform="translate(90 150)">
+    <rect x="0" y="-34" rx="20" height="44" width="360" fill="#dc0278"/>
+    <circle cx="26" cy="-12" r="7" fill="#fff"/>
+    <text x="46" y="-1" fill="#fff" font-family="'Noto Sans JP',sans-serif" font-size="22" font-weight="700">製造業向け Claude Code 導入支援</text>
+  </g>
+  <text x="88" y="300" fill="#12151a" font-family="'Manrope','Noto Sans JP',sans-serif" font-size="76" font-weight="800">AIに日本語で頼むだけ。</text>
+  <text x="88" y="398" fill="#dc0278" font-family="'Manrope','Noto Sans JP',sans-serif" font-size="76" font-weight="800">製造業のDXを、確実に。</text>
+  <text x="90" y="486" fill="#5f6870" font-family="'Noto Sans JP',sans-serif" font-size="30" font-weight="500">現場の繰り返し業務を、小さく自動化。診断から定着まで伴走します。</text>
+  <text x="90" y="566" fill="#12151a" font-family="Manrope,sans-serif" font-size="26" font-weight="800" letter-spacing="2">SOLEON<tspan fill="#5f6870" font-weight="500" letter-spacing="0"> ・ claudecode.soleon.jp</tspan></text>
+</svg>

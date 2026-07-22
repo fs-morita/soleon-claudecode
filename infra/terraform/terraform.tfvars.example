@@ -1,0 +1,10 @@
+# このファイルを terraform.tfvars にコピーして値を埋める（terraform.tfvars はコミットしない）
+#   cp terraform.tfvars.example terraform.tfvars
+
+github_owner = "fs-morita"          # GitHub のユーザー名 or Org 名
+github_repo  = "soleon-claudecode"  # 作成済みのリポジトリ名
+
+# 既定でOKなら省略可（変更したいときだけ）
+# region      = "ap-northeast-1"   # 東京
+# domain_name = "claudecode.soleon.jp"
+# github_branch = "main"

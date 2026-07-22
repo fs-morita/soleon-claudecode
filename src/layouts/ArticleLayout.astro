@@ -1,0 +1,337 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Thumbnail from '../components/Thumbnail.astro';
+import { jp } from '../lib/jp';
+
+export interface Props {
+  article: CollectionEntry<'articles'>;
+}
+const { article } = Astro.props;
+const { data } = article;
+
+const canonical = new URL(`/blog/${article.id}`, Astro.site).toString();
+
+// 読了時間の目安（日本語 約500字/分）
+const chars = (article.body ?? '').replace(/\s/g, '').length;
+const readingMin = Math.max(1, Math.round(chars / 500));
+
+// JSON-LD: Article 構造化データ
+const articleJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: data.title,
+  description: data.description,
+  datePublished: data.pubDate.toISOString(),
+  dateModified: (data.updatedDate ?? data.pubDate).toISOString(),
+  articleSection: data.category,
+  keywords: data.tags.join(', '),
+  inLanguage: 'ja',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+  author: {
+    '@type': 'Organization',
+    name: '株式会社SOLEON',
+    url: 'https://claudecode.soleon.jp',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: '株式会社SOLEON',
+    url: 'https://claudecode.soleon.jp',
+  },
+});
+---
+
+<BaseLayout
+  title={`${data.title} | SOLEON`}
+  description={data.description}
+  type="article"
+  jsonLd={articleJsonLd}
+>
+  <article class="post">
+    <div class="container container--narrow">
+      <nav class="post__breadcrumb" aria-label="パンくず">
+        <a href="/">ホーム</a> <span aria-hidden="true">/</span>
+        <a href="/blog">ブログ</a> <span aria-hidden="true">/</span>
+        <span class="muted">{data.category}</span>
+      </nav>
+
+      <header class="post__header">
+        <div class="post__meta">
+          <span class="chip chip--accent">{data.category}</span>
+          <FormattedDate date={data.pubDate} />
+          {
+            data.updatedDate && (
+              <span class="muted">
+                （更新: <FormattedDate date={data.updatedDate} />）
+              </span>
+            )
+          }
+          <span class="post__reading">およそ{readingMin}分で読めます</span>
+        </div>
+        <h1 class="post__title jp" set:html={jp(data.title)} />
+        <p class="post__desc jp" set:html={jp(data.description)} />
+      </header>
+    </div>
+
+    <div class="container container--narrow">
+      <div class="post__cover">
+        <Thumbnail title={data.title} category={data.category} />
+      </div>
+    </div>
+
+    <div class="container container--narrow">
+      <div class="post__body">
+        <slot />
+      </div>
+
+      {
+        data.tags.length > 0 && (
+          <ul class="post__tags">
+            {data.tags.map((t) => (
+              <li class="chip">#{t}</li>
+            ))}
+          </ul>
+        )
+      }
+
+      <aside class="post__cta">
+        <div class="post__cta-inner">
+          <span class="eyebrow">Claude Code 導入支援</span>
+          <h2>自社の業務で試してみたい方へ</h2>
+          <p>
+            「どの業務から自動化できそうか」の見極めから、Claude Code の導入・現場定着までSOLEONが伴走します。まずは無料のDX診断か、お問い合わせからお気軽にどうぞ。
+          </p>
+          <div class="post__cta-actions">
+            <a href="/check" class="btn btn--primary">無料でDX診断</a>
+            <a href="/#contact" class="btn btn--ghost">お問い合わせ</a>
+          </div>
+        </div>
+      </aside>
+
+      <p class="post__back">
+        <a href="/blog">← ブログ一覧に戻る</a>
+      </p>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .post {
+    padding-top: clamp(1.5rem, 4vw, 2.5rem);
+    padding-bottom: 0;
+  }
+  .post__breadcrumb {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 1.6rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .post__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 1.1rem;
+  }
+  .post__reading {
+    padding-left: 0.7rem;
+    border-left: 1px solid var(--border);
+  }
+  .post__title {
+    margin: 0 0 1.1rem;
+    line-height: 1.32;
+    font-size: clamp(1.8rem, 4.5vw, 2.7rem);
+  }
+  .post__desc {
+    font-size: 1.12rem;
+    line-height: 1.85;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .post__cover {
+    aspect-ratio: 1200 / 630;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    margin: 2rem 0 2.6rem;
+    background: #0e1118;
+  }
+
+  /* ===== 記事本文タイポグラフィ（読みやすさ重視） ===== */
+  .post__body {
+    font-size: 1.09rem;
+    line-height: 2.05;
+    color: #1a1e23;
+    letter-spacing: 0.003em;
+  }
+  /* リード（最初の段落）を少し大きく */
+  .post__body :global(> p:first-of-type) {
+    font-size: 1.18rem;
+    line-height: 1.95;
+    color: var(--ink);
+  }
+  .post__body :global(> p:first-of-type::first-letter) {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 3.1rem;
+    float: left;
+    line-height: 0.86;
+    padding: 0.1rem 0.7rem 0 0;
+    color: var(--magenta);
+  }
+  .post__body :global(h2) {
+    margin: 3rem 0 1.1rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--border-soft);
+    font-size: clamp(1.35rem, 3vw, 1.65rem);
+    line-height: 1.4;
+  }
+  /* 見出しにマゼンタのマーカー */
+  .post__body :global(h2)::before {
+    content: "";
+    display: block;
+    width: 42px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--magenta);
+    margin-bottom: 0.9rem;
+  }
+  .post__body :global(h3) {
+    margin: 2rem 0 0.8rem;
+    font-size: 1.2rem;
+  }
+  .post__body :global(p) {
+    margin: 0 0 1.5em;
+  }
+  .post__body :global(strong) {
+    color: var(--ink);
+    font-weight: 700;
+    background: linear-gradient(transparent 62%, rgba(220, 2, 120, 0.16) 62%);
+    padding: 0 0.1em;
+  }
+  .post__body :global(ul),
+  .post__body :global(ol) {
+    padding-left: 0;
+    margin: 0 0 1.6em;
+    list-style: none;
+  }
+  .post__body :global(li) {
+    position: relative;
+    padding-left: 1.7rem;
+    margin-bottom: 0.75em;
+  }
+  .post__body :global(ul li)::before {
+    content: "";
+    position: absolute;
+    left: 0.15rem;
+    top: 0.85em;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--magenta);
+    transform: rotate(45deg);
+  }
+  .post__body :global(ol) {
+    counter-reset: li;
+  }
+  .post__body :global(ol li)::before {
+    counter-increment: li;
+    content: counter(li);
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    width: 1.3rem;
+    height: 1.3rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: var(--font-display);
+    color: var(--white);
+    background: var(--magenta);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    line-height: 1;
+  }
+  .post__body :global(a) {
+    color: var(--accent-strong);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .post__body :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--paper-deep);
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    padding: 0.1em 0.4em;
+  }
+  .post__body :global(pre) {
+    background: #0f1216;
+    color: #e8eaed;
+    border-radius: var(--radius-sm);
+    padding: 1.1rem 1.2rem;
+    overflow-x: auto;
+    margin: 0 0 1.6em;
+  }
+  .post__body :global(pre code) {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+  }
+  .post__body :global(blockquote) {
+    margin: 1.6em 0;
+    padding: 1rem 1.3rem;
+    background: var(--paper-deep);
+    border-left: 4px solid var(--magenta);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    color: var(--ink-soft);
+  }
+  .post__body :global(blockquote p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .post__tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 2.5rem 0 0;
+  }
+
+  /* CTA */
+  .post__cta {
+    margin-top: 3rem;
+  }
+  .post__cta-inner {
+    background: linear-gradient(140deg, #fff, var(--paper-deep));
+    border: 1px solid color-mix(in srgb, var(--magenta) 22%, transparent);
+    border-radius: var(--radius);
+    padding: clamp(1.6rem, 4vw, 2.4rem);
+    box-shadow: var(--shadow-sm);
+  }
+  .post__cta-inner h2 {
+    margin: 0 0 0.8rem;
+    font-size: 1.35rem;
+  }
+  .post__cta-inner p {
+    margin: 0;
+    color: var(--ink-soft);
+  }
+  .post__cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 1.4rem;
+  }
+  .post__back {
+    margin-top: 2.5rem;
+    font-size: 0.95rem;
+  }
+</style>

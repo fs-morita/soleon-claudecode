@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DxCheck from '../components/DxCheck.astro';
+import { jp } from '../lib/jp';
+---
+
+<BaseLayout
+  title="製造業DX成熟度 無料診断 | SOLEON"
+  description="6つの設問に答えるだけで、自社の製造業DXの現在地とタイプが分かる無料診断。属人化・データ活用・AI活用の観点から、次に取り組むべき一歩をご提案します。登録不要・その場で結果表示。"
+>
+  <section class="section">
+    <div class="container container--narrow">
+      <header class="page-head">
+        <span class="eyebrow">DX Check</span>
+        <h1 class="jp" set:html={jp('製造業DX 無料診断')} />
+        <p
+          class="lead jp"
+          set:html={jp(
+            '6つの設問に答えるだけで、自社のDXの「現在地」とタイプが分かります。登録不要・その場で結果表示。所要時間は約1分です。'
+          )}
+        />
+      </header>
+
+      <DxCheck />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-bottom: 2.5rem;
+  }
+  .page-head h1 {
+    margin: 0 0 1rem;
+  }
+</style>

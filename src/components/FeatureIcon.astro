@@ -1,0 +1,41 @@
+---
+// src/components/FeatureIcon.astro
+// アイコンをアクセント色のチップに載せて、全セクションで見た目を統一する部品。
+// Lucide の細いラインアイコンを astro-icon 経由で描画する。
+//
+// 事前に:
+//   npm i astro-icon @iconify-json/lucide
+//   astro.config.mjs の integrations に icon() を追加（import icon from 'astro-icon'）
+//
+// 使い方:
+//   <FeatureIcon name="lucide:users-round" />
+import { Icon } from 'astro-icon/components';
+interface Props {
+  name: string;
+  size?: number; // チップの一辺(px)
+}
+const { name, size = 56 } = Astro.props;
+---
+<span class="feature-icon" style={`--fi-size:${size}px`}>
+  <Icon name={name} />
+</span>
+
+<style>
+  .feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--fi-size);
+    height: var(--fi-size);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+    color: var(--accent);
+    flex: none;
+  }
+  .feature-icon :global(svg) {
+    width: calc(var(--fi-size) * 0.5);
+    height: calc(var(--fi-size) * 0.5);
+    stroke-width: 1.75; /* 細い線に統一（Lucideの既定より少し細く） */
+  }
+</style>

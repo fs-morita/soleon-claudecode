@@ -1,0 +1,317 @@
+/* =========================================================
+   SOLEON claudecode.soleon.jp — global styles
+   soleon.jp に準拠したライト基調（ペーパー＋インク＋マゼンタ）
+   ========================================================= */
+
+:root {
+  /* Brand palette (soleon.jp より) */
+  --paper: #f5f3ee;        /* 明るい暖色ペーパー（ページ地） */
+  --paper-deep: #ece7dd;   /* 一段深いペーパー（交互セクション） */
+  --white: #ffffff;
+  --ink: #0b0d0f;          /* インク（見出し・本文） */
+  --ink-soft: #2b3037;
+  --steel: #8a929a;
+  --steel-dark: #5f6870;
+  --magenta: #dc0278;
+  --magenta-strong: #bd0067;
+  --magenta-bright: #ff1689;
+
+  /* 汎用エイリアス（各コンポーネントはこちらを参照） */
+  --bg: var(--paper);
+  --bg-elev: var(--white);
+  --bg-deep: var(--paper-deep);
+  --fg: var(--ink);
+  --muted: var(--steel-dark);
+  --accent: var(--magenta);
+  --accent-strong: var(--magenta-strong);
+  --border: rgba(11, 13, 15, 0.14);
+  --border-soft: rgba(11, 13, 15, 0.08);
+
+  /* Shadows（ライトテーマの浮き感） */
+  --shadow-sm: 0 1px 2px rgba(11, 13, 15, 0.05), 0 2px 8px rgba(11, 13, 15, 0.04);
+  --shadow-md: 0 6px 24px rgba(11, 13, 15, 0.08);
+  --shadow-accent: 0 10px 30px rgba(220, 2, 120, 0.18);
+
+  /* Typography */
+  --font-sans: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+  --font-display: "Manrope", "Noto Sans JP", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+  /* Layout */
+  --maxw: 1120px;
+  --maxw-narrow: 720px;
+  --radius: 16px;
+  --radius-sm: 9px;
+
+  /* Spacing rhythm */
+  --space-section: clamp(3.5rem, 8vw, 6.5rem);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.85;
+  font-feature-settings: "palt" 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  color: var(--white);
+  background: var(--magenta);
+}
+
+/* Links */
+a {
+  color: var(--accent-strong);
+  text-decoration: none;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+a:hover {
+  color: var(--magenta-bright);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  line-height: 1.28;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+
+/* 日本語の折り返し（BudouX が挿入する <wbr> の位置でだけ改行する） */
+:where(h1, h2, h3, h4, .jp) {
+  word-break: keep-all; /* <wbr> の位置でだけ折り返す */
+  overflow-wrap: anywhere; /* 長い英単語や型番のはみ出し防止 */
+  line-break: strict; /* 禁則処理 */
+  text-wrap: balance; /* 見出しの各行の長さを均す（対応ブラウザ） */
+}
+p {
+  text-wrap: pretty;
+}
+
+h1 {
+  font-size: clamp(2rem, 5.2vw, 3.2rem);
+}
+h2 {
+  font-size: clamp(1.55rem, 3.6vw, 2.2rem);
+}
+h3 {
+  font-size: 1.2rem;
+}
+
+p {
+  margin: 0 0 1.1em;
+}
+
+/* Layout helpers */
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: clamp(1.1rem, 4vw, 2rem);
+}
+.container--narrow {
+  max-width: var(--maxw-narrow);
+}
+
+.section {
+  padding-block: var(--space-section);
+}
+.section + .section {
+  padding-top: 0;
+}
+/* 交互の背景色でリズムを付ける */
+.section--alt {
+  background: var(--bg-deep);
+  padding-block: var(--space-section);
+}
+.section--alt + .section {
+  padding-top: var(--space-section);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.9rem;
+  font-weight: 700;
+}
+.eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.lead {
+  font-size: 1.15rem;
+  color: var(--ink-soft);
+  max-width: 42rem;
+  line-height: 1.9;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.98rem;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: transform 0.14s ease, background 0.15s ease, border-color 0.15s ease,
+    color 0.15s ease, box-shadow 0.15s ease;
+  line-height: 1.2;
+}
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn--primary {
+  background: var(--magenta);
+  color: var(--white);
+  border-color: var(--magenta);
+  box-shadow: var(--shadow-accent);
+}
+.btn--primary:hover {
+  background: var(--magenta-bright);
+  border-color: var(--magenta-bright);
+  color: var(--white);
+}
+.btn--ghost {
+  background: var(--white);
+  color: var(--ink);
+  border-color: var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.btn--ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+}
+
+/* Cards */
+.card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  padding: 1.6rem;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover {
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  box-shadow: var(--shadow-md);
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  gap: 1.4rem;
+}
+@media (min-width: 640px) {
+  .grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 860px) {
+  .grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Tag / chip */
+.chip {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--bg-deep);
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  padding: 0.18rem 0.75rem;
+  line-height: 1.5;
+}
+.chip--accent {
+  color: var(--white);
+  background: var(--magenta);
+  border-color: var(--magenta);
+}
+
+/* Divider */
+.hr {
+  border: 0;
+  border-top: 1px solid var(--border-soft);
+  margin-block: 0;
+}
+
+/* Visually hidden (accessibility) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus visibility */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

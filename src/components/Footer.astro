@@ -1,0 +1,130 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <img
+          src="/logo-white.svg"
+          alt="SOLEON"
+          class="site-footer__logo"
+          width="200"
+          height="53"
+        />
+        <p class="site-footer__desc">
+          製造業の「社外戦略室」。Claude Code / AI の導入支援から現場定着まで、伴走してDXを進めます。
+        </p>
+        <a href="/#contact" class="btn btn--primary site-footer__cta"
+          >無料で相談する</a
+        >
+      </div>
+
+      <nav class="site-footer__nav" aria-label="フッターナビゲーション">
+        <div>
+          <p class="site-footer__head">コンテンツ</p>
+          <ul>
+            <li><a href="/">ホーム</a></li>
+            <li><a href="/blog">ブログ（活用事例）</a></li>
+            <li><a href="/check">無料DX診断</a></li>
+            <li><a href="/#contact">お問い合わせ</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="site-footer__head">SOLEON</p>
+          <ul>
+            <li>
+              <a href="https://soleon.jp" target="_blank" rel="noopener">
+                SOLEON 本体サイト ↗
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="site-footer__bottom">
+      <p>&copy; {year} 株式会社SOLEON. All rights reserved.</p>
+      <p class="site-footer__tagline">
+        製造業向け Claude Code / AI 活用事例集
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--space-section);
+    background: var(--ink);
+    color: rgba(255, 255, 255, 0.82);
+    padding-top: 3.5rem;
+    padding-bottom: 2rem;
+  }
+  .site-footer__top {
+    display: grid;
+    gap: 2.5rem;
+  }
+  @media (min-width: 760px) {
+    .site-footer__top {
+      grid-template-columns: 1.4fr 1fr;
+    }
+  }
+  .site-footer__logo {
+    height: 40px;
+    width: auto;
+    margin-bottom: 1.1rem;
+  }
+  .site-footer__desc {
+    max-width: 34rem;
+    font-size: 0.92rem;
+    color: rgba(255, 255, 255, 0.66);
+    margin-bottom: 1.4rem;
+  }
+  .site-footer__nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .site-footer__head {
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--magenta-bright);
+    margin-bottom: 0.9rem;
+    font-weight: 700;
+  }
+  .site-footer__nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .site-footer__nav a {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.92rem;
+  }
+  .site-footer__nav a:hover {
+    color: #fff;
+  }
+  .site-footer__bottom {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .site-footer__bottom p {
+    margin: 0;
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .site-footer__tagline {
+    font-family: var(--font-display);
+  }
+</style>
