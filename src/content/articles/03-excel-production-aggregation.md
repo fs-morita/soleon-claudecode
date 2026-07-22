@@ -1,7 +1,7 @@
 ---
 title: "生産管理のExcelをAIで自動集計・可視化する【Claude Code活用事例】"
 description: "毎月手作業で行っている生産実績のExcel集計。Claude Codeを使えば、集計からグラフ化までを自動化できます。製造業の現場ですぐ試せる進め方を紹介します。"
-pubDate: 2026-07-23
+pubDate: 2026-07-22
 category: "実装事例"
 tags: ["製造業DX", "Claude Code", "Excel自動化", "生産管理", "データ可視化"]
 draft: false

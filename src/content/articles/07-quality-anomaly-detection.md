@@ -1,7 +1,7 @@
 ---
 title: "品質データの異常検知スクリプトを作る【Claude Code活用事例】"
 description: "検査データや測定値の中から、異常の兆候を早く見つけたい。Claude Codeを使って品質データの異常検知スクリプトを作る考え方を、製造業向けに解説します。"
-pubDate: 2026-07-30
+pubDate: 2026-07-22
 category: "実装事例"
 tags: ["製造業DX", "Claude Code", "品質管理", "異常検知", "データ分析"]
 draft: false

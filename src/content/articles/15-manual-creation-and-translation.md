@@ -1,7 +1,7 @@
 ---
 title: "作業手順書・マニュアルの作成と多言語化をClaude Codeで進める事例"
 description: "現場の作業手順書づくりや外国人材向けの多言語化に手間がかかっていませんか。Claude Codeを使ってマニュアルの作成と翻訳を効率化する進め方を、製造業向けに解説します。"
-pubDate: 2026-08-18
+pubDate: 2026-07-22
 category: "実装事例"
 tags: ["製造業DX", "Claude Code", "マニュアル作成", "多言語化"]
 draft: false

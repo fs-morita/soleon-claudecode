@@ -1,7 +1,7 @@
 ---
 title: "問い合わせ・見積依頼メールの返信下書きをClaude Codeで半自動化"
 description: "顧客からの問い合わせや見積依頼への返信メールに時間を取られていませんか。Claude Codeで返信の下書きを半自動化する進め方を、製造業向けに具体的なシナリオで解説します。"
-pubDate: 2026-08-15
+pubDate: 2026-07-22
 category: "実装事例"
 tags: ["製造業DX", "Claude Code", "メール自動化", "営業効率化"]
 draft: false

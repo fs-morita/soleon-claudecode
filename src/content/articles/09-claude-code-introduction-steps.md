@@ -1,7 +1,7 @@
 ---
 title: "Claude Code導入は何から？ 製造業が失敗しない5つのステップ"
 description: "Claude Codeを社内に入れたいが手順が分からない製造業の方へ。目的設定から対象業務の選定、環境準備、小さな試行、定着までを5ステップで具体的に解説します。"
-pubDate: 2026-08-04
+pubDate: 2026-07-22
 category: "入門"
 tags: ["製造業DX", "Claude Code", "導入ステップ", "業務効率化"]
 draft: false

@@ -1,7 +1,7 @@
 ---
 title: "簡易的な在庫管理ツールをノーコード感覚で自作する【Claude Code活用事例】"
 description: "市販の在庫管理システムは高機能すぎて合わない。そんなときは自分たちの使い方に合わせた簡易ツールを。Claude Codeで在庫管理ツールを自作する進め方を解説します。"
-pubDate: 2026-07-28
+pubDate: 2026-07-22
 category: "実装事例"
 tags: ["製造業DX", "Claude Code", "在庫管理", "自作ツール", "業務効率化"]
 draft: false

@@ -1,7 +1,7 @@
 ---
 title: "見積書・請求書の作成を半自動化する【Claude Code活用事例】"
 description: "見積書や請求書の作成に時間を取られていませんか。Claude Codeを使って、品目や数量を入れるだけで書類を生成する半自動化の進め方を解説します。"
-pubDate: 2026-08-01
+pubDate: 2026-07-22
 category: "実装事例"
 tags: ["製造業DX", "Claude Code", "見積書", "請求書", "バックオフィス効率化"]
 draft: false

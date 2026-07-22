@@ -1,7 +1,7 @@
 ---
 title: "生産計画・工程の並べ替えをClaude Codeで下ごしらえする活用事例"
 description: "生産計画やシフト、工程の順番決めに時間を取られていませんか。Claude Codeを使って計画立案の下ごしらえを補助する進め方を、製造業向けに具体的なシナリオで解説します。"
-pubDate: 2026-08-11
+pubDate: 2026-07-22
 category: "実装事例"
 tags: ["製造業DX", "Claude Code", "生産計画", "工程管理"]
 draft: false

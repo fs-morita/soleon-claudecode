@@ -1,7 +1,7 @@
 ---
 title: "点検表・設備保全記録のデジタル化と集計をClaude Codeで進める事例"
 description: "紙の点検表や設備保全記録の集計に手間がかかっていませんか。Claude Codeを使って点検・保全記録をデジタル化し、集計や異常の抽出まで補助する進め方を製造業向けに解説します。"
-pubDate: 2026-08-13
+pubDate: 2026-07-22
 category: "実装事例"
 tags: ["製造業DX", "Claude Code", "設備保全", "点検記録"]
 draft: false

@@ -1,7 +1,7 @@
 ---
 title: "製造業がAI・Claude Codeを安全に使うための情報管理と社内ルール"
 description: "機密図面や個人情報を扱う製造業がAIを使う際の情報管理の考え方を解説。Claude Codeを安全に活用するために押さえるべき原則と、現場で作るべき社内ルールの作り方を紹介します。"
-pubDate: 2026-08-08
+pubDate: 2026-07-22
 category: "入門"
 tags: ["製造業DX", "Claude Code", "セキュリティ", "情報管理"]
 draft: false

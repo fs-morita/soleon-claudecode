@@ -1,7 +1,7 @@
 ---
 title: "図面・仕様書PDFからの情報抽出をAIで効率化する【Claude Code活用事例】"
 description: "大量の図面や仕様書PDFから、必要な寸法・型番・材質を手作業で拾っていませんか。Claude Codeを使ってPDFからの情報抽出を効率化する方法を解説します。"
-pubDate: 2026-07-24
+pubDate: 2026-07-22
 category: "実装事例"
 tags: ["製造業DX", "Claude Code", "PDF", "図面", "情報抽出"]
 draft: false

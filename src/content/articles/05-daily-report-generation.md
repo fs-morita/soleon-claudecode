@@ -1,7 +1,7 @@
 ---
 title: "現場の日報・報告書テンプレートを自動生成する【Claude Code活用事例】"
 description: "毎日の日報や定例報告書の作成に時間を取られていませんか。Claude Codeで入力を最小化し、報告書を自動生成する仕組みの作り方を紹介します。"
-pubDate: 2026-07-25
+pubDate: 2026-07-22
 category: "実装事例"
 tags: ["製造業DX", "Claude Code", "日報", "報告書", "業務効率化"]
 draft: false
