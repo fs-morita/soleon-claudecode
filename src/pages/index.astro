@@ -150,7 +150,7 @@ const useCases = [
   <!-- 2. 課題提起 -->
   <section class="section section--alt">
     <div class="container">
-      <header class="block-head">
+      <header class="block-head block-head--center">
         <span class="eyebrow">Challenges</span>
         <h2 class="jp" set:html={jp('製造業がDXでつまずく、3つの壁')} />
         <p
@@ -259,7 +259,7 @@ const useCases = [
   <!-- 5. Claude Codeでできること -->
   <section class="section">
     <div class="container">
-      <header class="block-head">
+      <header class="block-head block-head--center">
         <span class="eyebrow">What you can do</span>
         <h2 class="jp" set:html={jp('Claude Code で、こんな業務が自動化できます')} />
         <p
@@ -534,6 +534,9 @@ const useCases = [
   }
   .block-head--center .eyebrow {
     justify-content: center;
+  }
+  .block-head--center .lead {
+    margin-inline: auto;
   }
   .block-head--center .lead {
     margin-inline: auto;
