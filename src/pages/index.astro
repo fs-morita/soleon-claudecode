@@ -150,7 +150,7 @@ const useCases = [
   <!-- 2. 課題提起 -->
   <section class="section section--alt">
     <div class="container">
-      <header class="block-head block-head--center">
+      <header class="block-head">
         <span class="eyebrow">Challenges</span>
         <h2 class="jp" set:html={jp('製造業がDXでつまずく、3つの壁')} />
         <p
@@ -232,7 +232,7 @@ const useCases = [
   <!-- 4. Claude Code 導入支援の進め方 -->
   <section class="section section--alt">
     <div class="container">
-      <header class="block-head block-head--center">
+      <header class="block-head">
         <span class="eyebrow">How we support</span>
         <h2 class="jp" set:html={jp('Claude Code 導入支援の進め方')} />
         <p
@@ -259,7 +259,7 @@ const useCases = [
   <!-- 5. Claude Codeでできること -->
   <section class="section">
     <div class="container">
-      <header class="block-head block-head--center">
+      <header class="block-head">
         <span class="eyebrow">What you can do</span>
         <h2 class="jp" set:html={jp('Claude Code で、こんな業務が自動化できます')} />
         <p
@@ -323,12 +323,11 @@ const useCases = [
   <!-- 8. 問い合わせフォーム -->
   <section class="section" id="contact">
     <div class="container container--narrow">
-      <header class="block-head block-head--center">
+      <header class="block-head">
         <span class="eyebrow">Contact</span>
         <h2 class="jp" set:html={jp('お問い合わせ')} />
         <p
           class="lead jp"
-          style="margin-inline:auto;"
           set:html={jp(
             '「何から始めるべきか分からない」という段階でも大丈夫です。Claude Code の導入について、自社の業務に合わせて一緒に整理します。ご相談は無料です。'
           )}
@@ -527,19 +526,6 @@ const useCases = [
   }
   .block-head .lead {
     max-width: 42rem;
-  }
-  .block-head--center {
-    margin-inline: auto;
-    text-align: center;
-  }
-  .block-head--center .eyebrow {
-    justify-content: center;
-  }
-  .block-head--center .lead {
-    margin-inline: auto;
-  }
-  .block-head--center .lead {
-    margin-inline: auto;
   }
   .block-head--row {
     max-width: none;
