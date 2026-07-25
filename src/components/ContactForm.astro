@@ -135,6 +135,12 @@ const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? '';
   .contact__submit {
     justify-self: start;
   }
+  @media (max-width: 639px) {
+    .contact__submit {
+      justify-self: center;
+      min-width: 12rem;
+    }
+  }
   .contact__status {
     margin: 0;
     font-size: 0.88rem;

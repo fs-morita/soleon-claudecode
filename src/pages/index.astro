@@ -393,6 +393,14 @@ const useCases = [
     flex-wrap: wrap;
     gap: 0.8rem;
   }
+  @media (max-width: 639px) {
+    .hero__actions {
+      justify-content: center;
+    }
+    .hero__badges {
+      justify-content: center;
+    }
+  }
   .hero__badges {
     list-style: none;
     display: flex;
@@ -720,5 +728,10 @@ const useCases = [
     background: #fff;
     color: var(--magenta-strong);
     border-color: #fff;
+  }
+  @media (max-width: 639px) {
+    .cta-banner__btn {
+      margin-inline: auto;
+    }
   }
 </style>
