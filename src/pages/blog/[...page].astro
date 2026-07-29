@@ -1,0 +1,138 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import Pagination from '../../components/Pagination.astro';
+import { jp } from '../../lib/jp';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const articles = (
+    await getCollection('articles', ({ data }) => data.draft !== true)
+  ).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  return paginate(articles, { pageSize: 20 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+
+// カテゴリ・タグの一覧（絞り込みリンク用）
+const all = await getCollection('articles', ({ data }) => data.draft !== true);
+const CATEGORY_ORDER = ['入門', '実装事例', '活用イメージ', '情シス代行'];
+const categories = CATEGORY_ORDER.map((cat) => ({
+  name: cat,
+  count: all.filter((a) => a.data.category === cat).length,
+})).filter((c) => c.count > 0);
+
+const tagCounts = new Map<string, number>();
+for (const a of all) {
+  for (const t of a.data.tags) tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1);
+}
+const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
+
+const pageSuffix =
+  page.currentPage > 1 ? `（${page.currentPage}/${page.lastPage}ページ）` : '';
+---
+
+<BaseLayout
+  title={`製造業 Claude Code 活用事例集${pageSuffix} | SOLEON`}
+  description="製造業のDXを進めるための Claude Code / AI 活用事例と入門記事。生産管理のExcel集計、図面PDFの情報抽出、日報自動生成、在庫管理ツールなど、現場ですぐ試せる実装ガイドを掲載しています。"
+>
+  <section class="section">
+    <div class="container">
+      <header class="page-head">
+        <span class="eyebrow">Blog</span>
+        <h1 class="jp" set:html={jp('ブログ｜製造業 Claude Code 活用事例集')} />
+        <p
+          class="lead jp"
+          set:html={jp(
+            '製造業のDXを「小さく始めて確実に効果を出す」ための、Claude Code 導入・活用のノウハウと実装ガイド。すべて再現可能なシナリオとして書いています。'
+          )}
+        />
+      </header>
+
+      <nav class="filter" aria-label="カテゴリで絞り込む">
+        <span class="filter__label">カテゴリ:</span>
+        {
+          categories.map((c) => (
+            <a href={`/blog/category/${c.name}`} class="chip filter__chip">
+              {c.name}
+              <span class="filter__count">{c.count}</span>
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="grid grid--3">
+        {page.data.map((article) => <ArticleCard article={article} />)}
+      </div>
+
+      <Pagination page={page} base="/blog" />
+
+      {
+        tags.length > 0 && (
+          <nav class="tags" aria-label="タグで絞り込む">
+            <h2 class="tags__title">タグから探す</h2>
+            <ul class="tags__list">
+              {tags.map(([tag, count]) => (
+                <li>
+                  <a href={`/blog/tag/${tag}`} class="chip filter__chip">
+                    #{tag}
+                    <span class="filter__count">{count}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    max-width: 44rem;
+    margin-bottom: 2.4rem;
+  }
+  .page-head h1 {
+    margin: 0 0 1rem;
+  }
+  .filter {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2.2rem;
+  }
+  .filter__label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-right: 0.3rem;
+  }
+  .filter__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+  }
+  .filter__count {
+    font-size: 0.78em;
+    color: var(--muted);
+  }
+  .tags {
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-soft);
+  }
+  .tags__title {
+    font-size: 1.05rem;
+    margin: 0 0 1.1rem;
+  }
+  .tags__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+</style>

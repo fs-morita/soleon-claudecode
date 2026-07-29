@@ -17,8 +17,26 @@ export async function getStaticPaths() {
 type Props = { article: CollectionEntry<'articles'> };
 const { article } = Astro.props;
 const { Content } = await render(article);
+
+// 関連記事: タグの一致数が多い順（同点なら新しい順）に3件
+const all = await getCollection('articles', ({ data }) => data.draft !== true);
+const related = all
+  .filter((a) => a.id !== article.id)
+  .map((a) => ({
+    a,
+    score:
+      a.data.tags.filter((t) => article.data.tags.includes(t)).length +
+      (a.data.category === article.data.category ? 0.5 : 0),
+  }))
+  .filter((x) => x.score >= 1)
+  .sort(
+    (x, y) =>
+      y.score - x.score || y.a.data.pubDate.valueOf() - x.a.data.pubDate.valueOf()
+  )
+  .slice(0, 3)
+  .map((x) => x.a);
 ---
 
-<ArticleLayout article={article}>
+<ArticleLayout article={article} related={related}>
   <Content />
 </ArticleLayout>
