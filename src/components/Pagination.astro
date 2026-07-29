@@ -1,0 +1,126 @@
+---
+// ページ送り。Astro の paginate() が返す page オブジェクトをそのまま受け取る
+export interface Props {
+  page: {
+    currentPage: number;
+    lastPage: number;
+    url: { prev?: string; next?: string };
+  };
+  /** ページ番号リンクの基点（例: '/blog', '/blog/category/活用イメージ'） */
+  base: string;
+}
+const { page, base } = Astro.props;
+
+const urlFor = (n: number) => (n === 1 ? base : `${base}/${n}`);
+
+// 1 … 4 5 [6] 7 8 … 26 のような窓付きページ番号
+const nums: (number | '…')[] = [];
+for (let i = 1; i <= page.lastPage; i++) {
+  if (i === 1 || i === page.lastPage || Math.abs(i - page.currentPage) <= 2) {
+    nums.push(i);
+  } else if (nums[nums.length - 1] !== '…') {
+    nums.push('…');
+  }
+}
+---
+
+{
+  page.lastPage > 1 && (
+    <nav class="pagination" aria-label="ページ送り">
+      {page.url.prev ? (
+        <a href={page.url.prev} class="pagination__nav" rel="prev">
+          ← 前へ
+        </a>
+      ) : (
+        <span class="pagination__nav is-disabled">← 前へ</span>
+      )}
+      <ul class="pagination__list">
+        {nums.map((n) =>
+          n === '…' ? (
+            <li class="pagination__ellipsis" aria-hidden="true">
+              …
+            </li>
+          ) : (
+            <li>
+              {n === page.currentPage ? (
+                <span class="pagination__num is-current" aria-current="page">
+                  {n}
+                </span>
+              ) : (
+                <a href={urlFor(n)} class="pagination__num">
+                  {n}
+                </a>
+              )}
+            </li>
+          )
+        )}
+      </ul>
+      {page.url.next ? (
+        <a href={page.url.next} class="pagination__nav" rel="next">
+          次へ →
+        </a>
+      ) : (
+        <span class="pagination__nav is-disabled">次へ →</span>
+      )}
+    </nav>
+  )
+}
+
+<style>
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 3rem;
+  }
+  .pagination__list {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .pagination__num {
+    display: grid;
+    place-items: center;
+    min-width: 2.4rem;
+    height: 2.4rem;
+    padding: 0 0.5rem;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-sm);
+    color: var(--fg);
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .pagination__num:hover {
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  .pagination__num.is-current {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--white, #fff);
+  }
+  .pagination__ellipsis {
+    color: var(--muted);
+    padding: 0 0.2rem;
+  }
+  .pagination__nav {
+    color: var(--fg);
+    font-size: 0.92rem;
+    padding: 0.5rem 0.8rem;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-sm);
+    transition: border-color 0.15s ease;
+  }
+  .pagination__nav:hover {
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  .pagination__nav.is-disabled {
+    color: var(--muted);
+    opacity: 0.5;
+  }
+</style>

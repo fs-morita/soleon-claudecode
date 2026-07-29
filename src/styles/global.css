@@ -271,6 +271,7 @@ p {
   border-radius: 999px;
   padding: 0.18rem 0.75rem;
   line-height: 1.5;
+  white-space: nowrap;
 }
 .chip--accent {
   color: var(--white);

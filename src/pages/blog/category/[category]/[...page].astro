@@ -1,0 +1,93 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import ArticleCard from '../../../../components/ArticleCard.astro';
+import Pagination from '../../../../components/Pagination.astro';
+import { jp } from '../../../../lib/jp';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const articles = (
+    await getCollection('articles', ({ data }) => data.draft !== true)
+  ).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  const categories = [...new Set(articles.map((a) => a.data.category))];
+  return categories.flatMap((category) =>
+    paginate(
+      articles.filter((a) => a.data.category === category),
+      { params: { category }, pageSize: 20 }
+    )
+  );
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const { category } = Astro.params;
+
+const pageSuffix =
+  page.currentPage > 1 ? `（${page.currentPage}/${page.lastPage}ページ）` : '';
+
+const DESCRIPTIONS: Record<string, string> = {
+  入門: '製造業のDX・Claude Code導入をこれから始める方向けの入門記事一覧です。',
+  実装事例:
+    'Excel集計・図面PDF・日報など、Claude Codeで現場業務を自動化する実装ガイドの一覧です。',
+  活用イメージ:
+    '業種別・業務別に「うちの場合はこう使える」が分かる、製造業のClaude Code活用イメージの一覧です。',
+  情シス代行:
+    'IT担当者がいない製造業の情シス業務を支援する記事の一覧です。',
+};
+const description =
+  (DESCRIPTIONS[category!] ??
+    `${category}に関する製造業のClaude Code / AI活用記事の一覧です。`) +
+  `全${page.total}記事を掲載しています。`;
+---
+
+<BaseLayout
+  title={`${category}の記事一覧${pageSuffix} | 製造業 Claude Code 活用事例集 | SOLEON`}
+  description={description}
+>
+  <section class="section">
+    <div class="container">
+      <header class="page-head">
+        <nav class="breadcrumb" aria-label="パンくず">
+          <a href="/">ホーム</a> <span aria-hidden="true">/</span>
+          <a href="/blog">ブログ</a> <span aria-hidden="true">/</span>
+          <span class="muted">{category}</span>
+        </nav>
+        <span class="eyebrow">Category</span>
+        <h1 class="jp" set:html={jp(`「${category}」の記事一覧`)} />
+        <p class="lead muted">
+          {page.total}記事{page.lastPage > 1 && `（${page.currentPage}/${page.lastPage}ページ）`}
+        </p>
+      </header>
+
+      <div class="grid grid--3">
+        {page.data.map((article) => <ArticleCard article={article} />)}
+      </div>
+
+      <Pagination page={page} base={`/blog/category/${category}`} />
+
+      <p class="back"><a href="/blog">← ブログ一覧に戻る</a></p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    max-width: 44rem;
+    margin-bottom: 2.4rem;
+  }
+  .page-head h1 {
+    margin: 0 0 0.8rem;
+  }
+  .breadcrumb {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 1.6rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .back {
+    margin-top: 2.5rem;
+    font-size: 0.95rem;
+  }
+</style>
