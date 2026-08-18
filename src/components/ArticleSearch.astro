@@ -1,0 +1,422 @@
+---
+// 記事タイトル・タグをキーワードで絞り込む。
+// JSが無い環境では表示されない（通常の一覧とカテゴリ／タグ導線がそのまま使える）。
+export interface Props {
+  /** 検索対象の総記事数（プレースホルダ表示用） */
+  total: number;
+}
+const { total } = Astro.props;
+---
+
+<div class="asearch" data-asearch hidden>
+  <label class="asearch__label" for="asearch-input">キーワードで探す</label>
+  <div class="asearch__box">
+    <span class="asearch__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="M20 20l-3.5-3.5"></path>
+      </svg>
+    </span>
+    <input
+      id="asearch-input"
+      type="search"
+      class="asearch__input"
+      placeholder={`全${total}本から探す（例：金型、在庫、見積、板金）`}
+      autocomplete="off"
+      spellcheck="false"
+      data-asearch-input
+    />
+    <button
+      type="button"
+      class="asearch__clear"
+      data-asearch-clear
+      hidden
+      aria-label="キーワードを消す">×</button
+    >
+  </div>
+  <p class="asearch__status" role="status" aria-live="polite" data-asearch-status></p>
+</div>
+
+<div class="asearch-results" data-asearch-results hidden></div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-asearch]');
+  const input = document.querySelector<HTMLInputElement>('[data-asearch-input]');
+  const clearBtn = document.querySelector<HTMLButtonElement>('[data-asearch-clear]');
+  const status = document.querySelector<HTMLElement>('[data-asearch-status]');
+  const results = document.querySelector<HTMLElement>('[data-asearch-results]');
+  const hideOnSearch = document.querySelectorAll<HTMLElement>('[data-search-hide]');
+
+  if (root && input && clearBtn && status && results) {
+    const MAX = 100;
+
+    type Row = { s: string; t: string; c: string; g: string };
+    type Entry = Row & { nt: string; ng: string };
+
+    /**
+     * 日本語の表記ゆれを吸収する。
+     * NFKC（全角英数→半角、半角カナ→全角）→ 小文字化 → カタカナ→ひらがな
+     * → 長音符と空白を除去。「サーバ」で「サーバー」に当たるようにする。
+     */
+    const norm = (s: string): string =>
+      s
+        .normalize('NFKC')
+        .toLowerCase()
+        .replace(/[ァ-ヶ]/g, (c) =>
+          String.fromCharCode(c.charCodeAt(0) - 0x60)
+        )
+        .replace(/[ー‐-―−\-]/g, '')
+        .replace(/\s+/g, '');
+
+    /**
+     * カナで打たれがちな語を英字表記に寄せる。
+     * 「エクセル」と入力しても Excel の記事に当たるようにするための最小限の対応。
+     */
+    const ALIAS = new Map<string, string>();
+    for (const [kana, latin] of Object.entries({
+      エクセル: 'excel',
+      キャド: 'cad',
+      クロード: 'claude',
+      ピーディーエフ: 'pdf',
+      アイエスオー: 'iso',
+      アイソ: 'iso',
+      アールピーエー: 'rpa',
+      エーアイ: 'ai',
+      イーディーアイ: 'edi',
+    })) {
+      ALIAS.set(norm(kana), norm(latin));
+    }
+
+    const esc = (s: string): string =>
+      s.replace(/[&<>"']/g, (c) => {
+        switch (c) {
+          case '&': return '&amp;';
+          case '<': return '&lt;';
+          case '>': return '&gt;';
+          case '"': return '&quot;';
+          default: return '&#39;';
+        }
+      });
+
+    /** 生のタイトルに対して一致部分を <mark> で囲む（正規化経由の一致は素通し） */
+    const highlight = (title: string, rawTerms: string[]): string => {
+      const lower = title.toLowerCase();
+      const ranges: Array<[number, number]> = [];
+      for (const term of rawTerms) {
+        const q = term.toLowerCase();
+        if (!q) continue;
+        let i = lower.indexOf(q);
+        while (i !== -1) {
+          ranges.push([i, i + q.length]);
+          i = lower.indexOf(q, i + q.length);
+        }
+      }
+      if (ranges.length === 0) return esc(title);
+      ranges.sort((a, b) => a[0] - b[0]);
+      const merged: Array<[number, number]> = [];
+      for (const r of ranges) {
+        const last = merged[merged.length - 1];
+        if (last && r[0] <= last[1]) last[1] = Math.max(last[1], r[1]);
+        else merged.push([r[0], r[1]]);
+      }
+      let out = '';
+      let pos = 0;
+      for (const [s, e] of merged) {
+        out += esc(title.slice(pos, s)) + '<mark>' + esc(title.slice(s, e)) + '</mark>';
+        pos = e;
+      }
+      return out + esc(title.slice(pos));
+    };
+
+    let index: Entry[] | null = null;
+    let loading: Promise<Entry[]> | null = null;
+    let failed = false;
+
+    const loadIndex = (): Promise<Entry[]> => {
+      if (index) return Promise.resolve(index);
+      if (!loading) {
+        loading = fetch('/search-index.json')
+          .then((r) => {
+            if (!r.ok) throw new Error(String(r.status));
+            return r.json() as Promise<Row[]>;
+          })
+          .then((rows) => {
+            index = rows.map((a) => ({ ...a, nt: norm(a.t), ng: norm(a.g) }));
+            return index;
+          })
+          .catch(() => {
+            failed = true;
+            index = [];
+            return index;
+          });
+      }
+      return loading;
+    };
+
+    const setHidden = (hidden: boolean): void => {
+      hideOnSearch.forEach((el) => {
+        el.hidden = hidden;
+      });
+    };
+
+    const render = (raw: string): void => {
+      const rawTerms = raw.trim().split(/[\s　]+/).filter(Boolean);
+      const terms = rawTerms.map(norm).filter(Boolean);
+
+      clearBtn.hidden = raw.length === 0;
+
+      if (terms.length === 0) {
+        setHidden(false);
+        results.hidden = true;
+        results.innerHTML = '';
+        status.textContent = '';
+        return;
+      }
+
+      setHidden(true);
+      results.hidden = false;
+
+      if (failed) {
+        status.textContent = '記事の読み込みに失敗しました。ページを再読み込みしてください。';
+        results.innerHTML = '';
+        return;
+      }
+      if (!index) {
+        status.textContent = '検索中…';
+        return;
+      }
+
+      const hits: Array<{ e: Entry; score: number }> = [];
+      for (const e of index) {
+        let score = 0;
+        let allInTitle = true;
+        let ok = true;
+        for (const t of terms) {
+          const alias = ALIAS.get(t);
+          const cands = alias ? [t, alias] : [t];
+          const inTitle = cands.some((c) => e.nt.includes(c));
+          if (!inTitle) allInTitle = false;
+          if (!inTitle && !cands.some((c) => e.ng.includes(c))) {
+            ok = false;
+            break;
+          }
+        }
+        if (!ok) continue;
+        if (allInTitle) score += 2;
+        const head = ALIAS.get(terms[0]) ?? terms[0];
+        if (e.nt.startsWith(terms[0]) || e.nt.startsWith(head)) score += 1;
+        hits.push({ e, score });
+      }
+      // 同点は元の並び（新しい順）を保つ
+      hits.sort((a, b) => b.score - a.score);
+
+      if (hits.length === 0) {
+        status.textContent = `「${raw.trim()}」に一致する記事はありません。短いキーワードで試してみてください。`;
+        results.innerHTML = '';
+        return;
+      }
+
+      const shown = hits.slice(0, MAX);
+      status.textContent =
+        hits.length > MAX
+          ? `${hits.length}件見つかりました（上位${MAX}件を表示）`
+          : `${hits.length}件見つかりました`;
+
+      results.innerHTML =
+        '<ul class="asearch-results__list">' +
+        shown
+          .map(
+            ({ e }) =>
+              `<li class="asearch-results__item"><a class="asearch-results__link" href="/blog/${encodeURIComponent(e.s)}">` +
+              `<span class="chip asearch-results__cat">${esc(e.c)}</span>` +
+              `<span class="asearch-results__title">${highlight(e.t, rawTerms)}</span>` +
+              `</a></li>`
+          )
+          .join('') +
+        '</ul>';
+    };
+
+    const syncUrl = (raw: string): void => {
+      const url = new URL(window.location.href);
+      if (raw.trim()) url.searchParams.set('q', raw.trim());
+      else url.searchParams.delete('q');
+      window.history.replaceState(null, '', url.pathname + url.search + url.hash);
+    };
+
+    let timer: number | undefined;
+    const onInput = (): void => {
+      const raw = input.value;
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        if (raw.trim()) {
+          render(raw);
+          void loadIndex().then(() => {
+            if (input.value === raw) render(raw);
+          });
+        } else {
+          render(raw);
+        }
+        syncUrl(raw);
+      }, 120);
+    };
+
+    input.addEventListener('input', onInput);
+    input.addEventListener('focus', () => void loadIndex(), { once: true });
+
+    input.addEventListener('keydown', (ev: KeyboardEvent) => {
+      if (ev.key === 'Escape') {
+        input.value = '';
+        render('');
+        syncUrl('');
+      } else if (ev.key === 'Enter') {
+        const first = results.querySelector<HTMLAnchorElement>('.asearch-results__link');
+        if (first) {
+          ev.preventDefault();
+          window.location.href = first.href;
+        }
+      }
+    });
+
+    clearBtn.addEventListener('click', () => {
+      input.value = '';
+      render('');
+      syncUrl('');
+      input.focus();
+    });
+
+    // ?q= 付きで開かれた場合はそのまま絞り込んだ状態にする
+    const initial = new URL(window.location.href).searchParams.get('q');
+    if (initial) {
+      input.value = initial;
+      render(initial);
+      void loadIndex().then(() => render(initial));
+    }
+
+    root.hidden = false;
+  }
+</script>
+
+<style>
+  .asearch {
+    margin-bottom: 1.4rem;
+  }
+  .asearch__label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .asearch__box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 34rem;
+  }
+  .asearch__icon {
+    position: absolute;
+    left: 0.9rem;
+    display: flex;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .asearch__input {
+    width: 100%;
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--fg);
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.7rem 2.6rem 0.7rem 2.6rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .asearch__input::placeholder {
+    color: var(--muted);
+    opacity: 0.85;
+  }
+  .asearch__input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+  }
+  /* ブラウザ標準のクリアボタンは自前のものと重なるので消す */
+  .asearch__input::-webkit-search-cancel-button,
+  .asearch__input::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .asearch__clear {
+    position: absolute;
+    right: 0.55rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.7rem;
+    height: 1.7rem;
+    font-size: 1.1rem;
+    line-height: 1;
+    color: var(--muted);
+    background: var(--bg-deep);
+    border: 1px solid var(--border-soft);
+    border-radius: 999px;
+    cursor: pointer;
+    padding: 0;
+  }
+  .asearch__clear:hover {
+    color: var(--fg);
+    border-color: var(--border);
+  }
+  .asearch__status {
+    min-height: 1.3em;
+    margin: 0.6rem 0 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .asearch-results {
+    margin-bottom: 2.5rem;
+  }
+  .asearch-results :global(.asearch-results__list) {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--border-soft);
+  }
+  .asearch-results :global(.asearch-results__item) {
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .asearch-results :global(.asearch-results__link) {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.85rem 0.4rem;
+    color: var(--fg);
+    text-decoration: none;
+    transition: background-color 0.12s ease;
+  }
+  .asearch-results :global(.asearch-results__link:hover) {
+    background: var(--bg-deep);
+    color: var(--fg);
+  }
+  .asearch-results :global(.asearch-results__cat) {
+    flex: none;
+    align-self: center;
+  }
+  .asearch-results :global(.asearch-results__title) {
+    font-size: 0.98rem;
+    line-height: 1.55;
+  }
+  .asearch-results :global(mark) {
+    background: color-mix(in srgb, var(--accent) 20%, transparent);
+    color: inherit;
+    border-radius: 3px;
+    padding: 0 0.1em;
+  }
+  @media (max-width: 560px) {
+    .asearch-results :global(.asearch-results__link) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.4rem;
+    }
+  }
+</style>

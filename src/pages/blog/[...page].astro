@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import Pagination from '../../components/Pagination.astro';
+import ArticleSearch from '../../components/ArticleSearch.astro';
 import { jp } from '../../lib/jp';
 import type { GetStaticPaths } from 'astro';
 
@@ -62,29 +63,33 @@ const pageSuffix =
         }
       </nav>
 
-      <div class="grid grid--3">
-        {page.data.map((article) => <ArticleCard article={article} />)}
+      <ArticleSearch total={all.length} />
+
+      <div data-search-hide>
+        <div class="grid grid--3">
+          {page.data.map((article) => <ArticleCard article={article} />)}
+        </div>
+
+        <Pagination page={page} base="/blog" />
+
+        {
+          tags.length > 0 && (
+            <nav class="tags" aria-label="タグで絞り込む">
+              <h2 class="tags__title">タグから探す</h2>
+              <ul class="tags__list">
+                {tags.map(([tag, count]) => (
+                  <li>
+                    <a href={`/blog/tag/${tag}`} class="chip filter__chip">
+                      #{tag}
+                      <span class="filter__count">{count}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )
+        }
       </div>
-
-      <Pagination page={page} base="/blog" />
-
-      {
-        tags.length > 0 && (
-          <nav class="tags" aria-label="タグで絞り込む">
-            <h2 class="tags__title">タグから探す</h2>
-            <ul class="tags__list">
-              {tags.map(([tag, count]) => (
-                <li>
-                  <a href={`/blog/tag/${tag}`} class="chip filter__chip">
-                    #{tag}
-                    <span class="filter__count">{count}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        )
-      }
     </div>
   </section>
 </BaseLayout>
@@ -102,7 +107,7 @@ const pageSuffix =
     align-items: center;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-bottom: 2.2rem;
+    margin-bottom: 1.6rem;
   }
   .filter__label {
     font-size: 0.85rem;
