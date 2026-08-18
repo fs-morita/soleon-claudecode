@@ -13,8 +13,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "x:validate": "node scripts/x/validate.mjs",
-    "x:preview": "node scripts/x/preview.mjs",
-    "x:post": "node scripts/x/post.mjs"
+    "x:export": "node scripts/x/export.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
