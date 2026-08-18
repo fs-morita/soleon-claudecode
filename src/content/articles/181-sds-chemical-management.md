@@ -1,7 +1,7 @@
 ---
 title: "化学物質（SDS）の管理を整える"
 description: "使っている薬品のSDSが、どこにあるか分かりますか。保管している化学物質の一覧と、必要な情報を整理できます。"
-pubDate: 2026-08-06
+pubDate: 2026-07-21
 category: "できること"
 tags: ["製造業DX", "Claude Code", "安全衛生", "化学物質管理", "法令対応"]
 draft: false

@@ -1,7 +1,7 @@
 ---
 title: "BCP（事業継続計画）を文書にする"
 description: "地震や水害で操業が止まったら、何をどの順で動かすか。取引先から求められることも増えています。実態に合った形で作れます。"
-pubDate: 2026-08-10
+pubDate: 2026-07-22
 category: "できること"
 tags: ["製造業DX", "Claude Code", "BCP", "リスク管理", "経営管理"]
 draft: false

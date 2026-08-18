@@ -1,7 +1,7 @@
 ---
 title: "保証期間を管理する"
 description: "この製品はまだ保証中か、切れているか。出荷の記録と保証条件から、その場で判断できる形にできます。"
-pubDate: 2026-08-11
+pubDate: 2026-07-23
 category: "できること"
 tags: ["製造業DX", "Claude Code", "アフターサービス", "契約管理", "顧客対応"]
 draft: false

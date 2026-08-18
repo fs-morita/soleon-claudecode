@@ -1,7 +1,7 @@
 ---
 title: "買掛金の支払予定表を作る"
 description: "来月いくら払うのか、月末になるまで分からない。仕入先ごとの支払条件から、支払予定を先に出せる形にできます。"
-pubDate: 2026-07-29
+pubDate: 2026-07-16
 category: "できること"
 tags: ["製造業DX", "Claude Code", "経理", "買掛金", "資金繰り"]
 draft: false

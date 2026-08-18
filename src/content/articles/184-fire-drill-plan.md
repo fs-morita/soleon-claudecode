@@ -1,7 +1,7 @@
 ---
 title: "消防訓練の計画と記録を整える"
 description: "年に何回やるべきか、何を記録すべきか。訓練の計画を立てて、記録を残す形にできます。"
-pubDate: 2026-08-06
+pubDate: 2026-07-22
 category: "できること"
 tags: ["製造業DX", "Claude Code", "防災", "総務", "訓練記録"]
 draft: false

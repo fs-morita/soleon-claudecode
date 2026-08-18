@@ -1,7 +1,7 @@
 ---
 title: "各種申請書のPDFを埋める"
 description: "役所や取引先の様式に、同じ会社情報を何度も書いていませんか。定型の情報を持っておいて、様式に流し込めます。"
-pubDate: 2026-08-13
+pubDate: 2026-07-24
 category: "できること"
 tags: ["製造業DX", "Claude Code", "総務", "書類作成", "事務効率化"]
 draft: false

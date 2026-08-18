@@ -1,7 +1,7 @@
 ---
 title: "小さな自動化を、社内に広げる"
 description: "一人が使い始めた便利な仕組みを、社内に広げるには。押し付けずに広がる進め方をまとめました。"
-pubDate: 2026-08-18
+pubDate: 2026-07-28
 category: "できること"
 tags: ["製造業DX", "Claude Code", "DX推進", "社内定着", "業務改善"]
 draft: false

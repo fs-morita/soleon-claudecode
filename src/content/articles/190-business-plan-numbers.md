@@ -1,7 +1,7 @@
 ---
 title: "事業計画の数値を組み立てる"
 description: "銀行や補助金で求められる計画。過去の実績をもとに、根拠のある数字を組み立てられる形にできます。"
-pubDate: 2026-08-07
+pubDate: 2026-07-22
 category: "できること"
 tags: ["製造業DX", "Claude Code", "経営管理", "事業計画", "資金調達"]
 draft: false

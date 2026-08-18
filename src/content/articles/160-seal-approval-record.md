@@ -1,7 +1,7 @@
 ---
 title: "押印申請の記録を残す"
 description: "会社の実印や角印を、いつ何に押したか記録していますか。申請と押印の履歴を残して、後から追える形にできます。"
-pubDate: 2026-08-03
+pubDate: 2026-07-20
 category: "できること"
 tags: ["製造業DX", "Claude Code", "総務", "内部統制", "記録"]
 draft: false

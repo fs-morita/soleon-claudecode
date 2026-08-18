@@ -1,7 +1,7 @@
 ---
 title: "客先への定期報告書を作る"
 description: "月次の納入実績、品質の状況、改善の取り組み。客先に定期的に出す報告を、データから組み立てられます。"
-pubDate: 2026-08-11
+pubDate: 2026-07-23
 category: "できること"
 tags: ["製造業DX", "Claude Code", "顧客対応", "報告書", "品質管理"]
 draft: false

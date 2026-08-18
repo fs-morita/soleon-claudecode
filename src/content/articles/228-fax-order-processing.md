@@ -1,7 +1,7 @@
 ---
 title: "FAXで届く注文を処理する"
 description: "まだFAXで注文が来る。受け取って、読んで、システムに入力する。この流れを短くできます。"
-pubDate: 2026-08-14
+pubDate: 2026-07-27
 category: "できること"
 tags: ["製造業DX", "Claude Code", "受注管理", "FAX", "転記"]
 draft: false

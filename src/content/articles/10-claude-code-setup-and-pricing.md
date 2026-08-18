@@ -1,7 +1,7 @@
 ---
 title: "Claude Codeに必要な環境と料金は？ 始めるためのコストと最初の30分"
 description: "Claude Codeを始めるには何が必要でいくらかかるのか。パソコン・VS Code・Claudeの有料プラン（Pro/Max）といった準備物とコスト感、最初の30分の流れを製造業向けに解説します。"
-pubDate: 2026-07-02
+pubDate: 2026-07-01
 category: "入門"
 tags: ["Claude Code", "製造業DX", "料金", "環境構築"]
 draft: false
