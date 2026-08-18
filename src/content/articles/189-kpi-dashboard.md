@@ -1,7 +1,7 @@
 ---
 title: "見るべき数字を、毎週同じ形で並べる"
 description: "数字を見ようと思っても、集めるのが大変で続かない。見る項目を決めて、毎週同じ形で出る仕組みにできます。"
-pubDate: 2026-08-07
+pubDate: 2026-07-22
 category: "できること"
 tags: ["製造業DX", "Claude Code", "経営管理", "KPI", "見える化"]
 draft: false

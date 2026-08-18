@@ -1,7 +1,7 @@
 ---
 title: "社内の用語集を作る"
 description: "略語や社内独自の言い方が、新しい人には分かりません。使われている言葉を集めて、意味を添えた一覧にできます。"
-pubDate: 2026-08-18
+pubDate: 2026-07-28
 category: "できること"
 tags: ["製造業DX", "Claude Code", "人材育成", "情報共有", "業務改善"]
 draft: false

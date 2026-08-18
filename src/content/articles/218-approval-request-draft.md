@@ -1,7 +1,7 @@
 ---
 title: "稟議書の下書きを作る"
 description: "設備を買いたいのに、稟議書を書くのが億劫で止まっている。必要な項目を埋めた下書きを用意できます。"
-pubDate: 2026-08-13
+pubDate: 2026-07-24
 category: "できること"
 tags: ["製造業DX", "Claude Code", "総務", "稟議", "書類作成"]
 draft: false

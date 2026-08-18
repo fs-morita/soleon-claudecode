@@ -1,7 +1,7 @@
 ---
 title: "うまくいかなかった自動化を見直す"
 description: "導入したツールが使われていない、作った仕組みが止まっている。原因を整理して、次に活かせる形にできます。"
-pubDate: 2026-08-18
+pubDate: 2026-07-28
 category: "できること"
 tags: ["製造業DX", "Claude Code", "業務改善", "DX", "振り返り"]
 draft: false

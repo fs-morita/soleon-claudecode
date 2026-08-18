@@ -1,7 +1,7 @@
 ---
 title: "教育の実施記録を管理する"
 description: "誰に何をいつ教えたかが残っていますか。監査でも育成でも必要になる記録を、負担なく残せる形にできます。"
-pubDate: 2026-08-10
+pubDate: 2026-07-23
 category: "できること"
 tags: ["製造業DX", "Claude Code", "人材育成", "教育記録", "ISO"]
 draft: false

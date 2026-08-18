@@ -1,7 +1,7 @@
 ---
 title: "求人の原稿を書く"
 description: "応募が来ない求人票、中身を見直したことはありますか。自社の実情をもとに、伝わる求人原稿の下書きを作れます。"
-pubDate: 2026-07-30
+pubDate: 2026-07-17
 category: "できること"
 tags: ["製造業DX", "Claude Code", "採用", "人事", "求人"]
 draft: false

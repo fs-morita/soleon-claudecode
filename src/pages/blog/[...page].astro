@@ -17,7 +17,7 @@ const { page } = Astro.props;
 
 // カテゴリ・タグの一覧（絞り込みリンク用）
 const all = await getCollection('articles', ({ data }) => data.draft !== true);
-const CATEGORY_ORDER = ['入門', '実装事例', '活用イメージ', '情シス代行'];
+const CATEGORY_ORDER = ['入門', '実装事例', 'できること', '業種別', 'AI活用', '情シス代行'];
 const categories = CATEGORY_ORDER.map((cat) => ({
   name: cat,
   count: all.filter((a) => a.data.category === cat).length,

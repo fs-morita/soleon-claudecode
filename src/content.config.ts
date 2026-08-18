@@ -10,7 +10,7 @@ const articles = defineCollection({
     description: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
-    category: z.enum(['入門', '実装事例', 'できること', '情シス代行']),
+    category: z.enum(['入門', '実装事例', 'できること', '業種別', 'AI活用', '情シス代行']),
     tags: z.array(z.string()).default([]),
     // true の記事はビルドから除外
     draft: z.boolean().default(false),

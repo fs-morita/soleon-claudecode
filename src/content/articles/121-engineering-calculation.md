@@ -1,7 +1,7 @@
 ---
 title: "繰り返す技術計算を、道具にする"
 description: "毎回Excelで同じ計算をして、シートを使い回していませんか。計算の中身を整理して、誰でも使える形の道具にできます。"
-pubDate: 2026-07-24
+pubDate: 2026-07-15
 category: "できること"
 tags: ["製造業DX", "Claude Code", "設計", "技術計算", "ツール作成"]
 draft: false
