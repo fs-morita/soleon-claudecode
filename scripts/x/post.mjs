@@ -10,6 +10,7 @@ import { authHeader, credentialsFromEnv } from './lib/oauth.mjs';
 import { loadQueue, renderPost } from './lib/queue.mjs';
 import { resolveIndex, describeIndex } from './lib/schedule.mjs';
 import { weightedLength, MAX_WEIGHTED } from './lib/tweet-length.mjs';
+import { costOf, usd } from './lib/cost.mjs';
 
 const ENDPOINT = 'https://api.twitter.com/2/tweets';
 
@@ -60,7 +61,7 @@ async function main() {
   const length = weightedLength(text);
 
   console.log(`枠: ${describeIndex(queue, index)}  (index ${index} / ${queue.posts.length})`);
-  console.log(`長さ: ${length} / ${MAX_WEIGHTED}`);
+  console.log(`長さ: ${length} / ${MAX_WEIGHTED}  費用: ${usd(costOf(post))}`);
   console.log('---');
   console.log(text);
   console.log('---');

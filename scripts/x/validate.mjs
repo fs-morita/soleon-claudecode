@@ -8,6 +8,7 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { loadQueue, renderPost } from './lib/queue.mjs';
+import { summarize, usd, jpy } from './lib/cost.mjs';
 import { weightedLength, MAX_WEIGHTED } from './lib/tweet-length.mjs';
 
 const ARTICLES_DIR = fileURLToPath(new URL('../../src/content/articles/', import.meta.url));
@@ -70,9 +71,12 @@ queue.posts.forEach((post, i) => {
   }
 });
 
-const days = Math.floor(queue.posts.length / queue.slots.length);
-console.log(`投稿数: ${queue.posts.length} 本 / ${queue.slots.length} 本per日 = 約 ${days} 日分`);
+const cost = summarize(queue.posts, queue.slots.length);
+console.log(`投稿数: ${queue.posts.length} 本 / 1日 ${queue.slots.length} 本 = 約 ${cost.days} 日分`);
 console.log(`記事総数: ${articles.size} 本（未使用 ${articles.size - seenSlugs.size} 本）`);
+console.log(
+  `費用の見込み: 月 ${usd(cost.perMonth)}（${jpy(cost.perMonth)}） / 全部流して ${usd(cost.total)}`,
+);
 
 for (const w of warnings) console.log(`警告: ${w}`);
 for (const e of errors) console.error(`エラー: ${e}`);

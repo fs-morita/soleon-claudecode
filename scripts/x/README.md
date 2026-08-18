@@ -39,22 +39,44 @@ npm run x:post -- --index 3 --dry-run   # 3 番目を確認
 { "slug": "243-sheet-metal-unfold", "text": "本文。URL は書かない。" }
 ```
 
-## X API の資格情報
+## 費用（重要）
 
-無料枠（Free）で足りる。投稿は月 500 件まで、1 日 5 回なら月およそ 150 件。
-※ X の料金体系は変わることがあるので、登録時に現在の上限を確認すること。
+**無料枠は無い。** X は 2026-02-06 に新規開発者向けの無料枠を廃止し、
+従量課金（Pay Per Use）を既定にした。ダッシュボードのプロジェクト名が
+`Default project - ... (Pay Per Use)` になっていれば従量課金。
+
+| 投稿の種類 | 単価 |
+| --- | --- |
+| テキストのみ | $0.015 |
+| URL を含む | $0.20 |
+
+**この仕組みは記事 URL を貼るので、1 件あたり $0.20 になる。**
+
+| 頻度 | 月あたり | 442 本を流し切るまで |
+| --- | --- | --- |
+| 1 日 5 回 | 150 件 = $30（約 4,500 円） | 88 日 / 約 $88 |
+| 1 日 3 回 | 90 件 = $18（約 2,700 円） | 148 日 / 約 $88 |
+| 1 日 2 回 | 60 件 = $12（約 1,800 円） | 221 日 / 約 $88 |
+
+総額は頻度によらず約 $88。頻度で変わるのは月々の負担と、流し切るまでの期間。
+
+`npm run x:validate` が現在の設定での費用見込みを表示する。
+
+## X API の資格情報
 
 1. https://developer.x.com/ で開発者アカウントを作る
 2. Project と App を作る
-3. App の **User authentication settings** で
+3. **左メニューの「支払い」「クレジット」から支払い設定を済ませる**
+   （未設定だと API 呼び出しが通らない）
+4. App の **User authentication settings** で
    - App permissions を **Read and write** にする（Read only のままだと投稿できない）
    - Type of App は **Web App / Automated App or Bot**
-4. **Keys and tokens** から 4 つを発行する
+5. **Keys and tokens** から 4 つを発行する
    - API Key / API Key Secret
    - Access Token / Access Token Secret
      （権限を Read and write に変えた場合は、Access Token を**再発行**する。
      　権限変更前に発行したトークンは読み取り専用のまま）
-5. GitHub リポジトリの Settings → Secrets and variables → Actions に登録する
+6. GitHub リポジトリの Settings → Secrets and variables → Actions に登録する
 
 | Secret 名 | 中身 |
 | --- | --- |
