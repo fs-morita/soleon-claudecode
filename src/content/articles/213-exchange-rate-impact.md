@@ -1,7 +1,7 @@
 ---
 title: "為替の影響を見積に反映する"
 description: "外貨建ての取引で、レートが動くと利益が変わります。影響額を計算して、見積の条件を決める材料にできます。"
-pubDate: 2026-07-29
+pubDate: 2026-08-12
 category: "できること"
 tags: ["製造業DX", "Claude Code", "貿易", "為替", "見積"]
 draft: false

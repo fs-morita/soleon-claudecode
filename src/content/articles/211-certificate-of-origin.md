@@ -1,7 +1,7 @@
 ---
 title: "原産地証明の準備を進める"
 description: "EPAを使えば関税が下がるのに、書類の準備が大変で使っていない。必要な資料の洗い出しと整理を進められます。"
-pubDate: 2026-07-28
+pubDate: 2026-08-12
 category: "できること"
 tags: ["製造業DX", "Claude Code", "貿易", "原産地証明", "EPA"]
 draft: false

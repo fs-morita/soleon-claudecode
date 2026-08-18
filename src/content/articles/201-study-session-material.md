@@ -1,7 +1,7 @@
 ---
 title: "社内勉強会の資料を作る"
 description: "勉強会をやりたいが、資料を作る時間がない。社内の記録や実例をもとに、話す材料を用意できます。"
-pubDate: 2026-07-21
+pubDate: 2026-08-11
 category: "できること"
 tags: ["製造業DX", "Claude Code", "人材育成", "社内教育", "資料作成"]
 draft: false

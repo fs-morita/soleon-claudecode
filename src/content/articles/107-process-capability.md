@@ -1,7 +1,7 @@
 ---
 title: "工程能力（Cp・Cpk）を出して、推移を見る"
 description: "客先から工程能力の提出を求められて、その都度Excelで計算していませんか。測定データから自動で算出し、推移まで見られる形にできます。"
-pubDate: 2026-05-15
+pubDate: 2026-07-22
 category: "できること"
 tags: ["製造業DX", "Claude Code", "品質管理", "工程能力", "統計"]
 draft: false

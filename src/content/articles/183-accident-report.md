@@ -1,7 +1,7 @@
 ---
 title: "労災の報告書を作る"
 description: "事故が起きたとき、必要な報告と手続きを漏らさず進められますか。記録の整理と報告書の下書きまで用意できます。"
-pubDate: 2026-07-08
+pubDate: 2026-08-06
 category: "できること"
 tags: ["製造業DX", "Claude Code", "安全衛生", "労災", "報告書"]
 draft: false

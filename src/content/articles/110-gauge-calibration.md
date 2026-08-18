@@ -1,7 +1,7 @@
 ---
 title: "測定器の校正期限を切らさない"
 description: "監査の直前に校正切れが見つかって慌てる。測定器の台帳と期限を管理して、切れる前に知らせる形にできます。"
-pubDate: 2026-05-18
+pubDate: 2026-07-23
 category: "できること"
 tags: ["製造業DX", "Claude Code", "品質管理", "校正管理", "ISO"]
 draft: false

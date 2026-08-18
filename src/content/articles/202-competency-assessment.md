@@ -1,7 +1,7 @@
 ---
 title: "力量評価と再教育を管理する"
 description: "できるようになったかを、どう判断していますか。評価の基準を決めて、記録して、次の教育につなげる形にできます。"
-pubDate: 2026-07-21
+pubDate: 2026-08-11
 category: "できること"
 tags: ["製造業DX", "Claude Code", "人材育成", "力量管理", "ISO"]
 draft: false
