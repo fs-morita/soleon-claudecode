@@ -1,7 +1,7 @@
 ---
 title: "Claude Codeとは？ 製造業の現場でエンジニアでなくても使えるAIツール"
 description: "Claude Codeは、AIに日本語で指示するだけで業務ツールやスクリプトを作れる開発支援ツール。プログラミング未経験の製造業の方に向けて、何ができるのかを分かりやすく解説します。"
-pubDate: 2026-07-22
+pubDate: 2026-07-01
 category: "入門"
 tags: ["Claude Code", "製造業DX", "AIツール", "ノーコード"]
 draft: false

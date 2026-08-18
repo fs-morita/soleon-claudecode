@@ -1,7 +1,7 @@
 ---
 title: "ISOの文書管理と監査準備の手間を減らす"
 description: "改訂履歴、旧版の回収、記録の保管期限。ISO9001の維持審査が近づくたびに走り回る作業を、日常的に整った状態を保つ形に置き換えられます。"
-pubDate: 2026-06-30
+pubDate: 2026-07-07
 category: "できること"
 tags: ["製造業DX", "Claude Code", "ISO9001", "文書管理", "品質保証"]
 draft: false

@@ -1,7 +1,7 @@
 ---
 title: "危険予知（KY）活動の記録を残す"
 description: "毎朝のKY活動が、形だけになっていませんか。記録を集めて、実際に挙がっている危険を整理できる形にできます。"
-pubDate: 2026-07-06
+pubDate: 2026-08-05
 category: "できること"
 tags: ["製造業DX", "Claude Code", "安全衛生", "KY活動", "現場管理"]
 draft: false

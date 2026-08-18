@@ -1,7 +1,7 @@
 ---
 title: "昔作ったAccessの中身を調べる"
 description: "10年以上動いている社内システム。データはどうなっていて、どんな処理をしているのか。中身を把握するところから始められます。"
-pubDate: 2026-08-06
+pubDate: 2026-08-14
 category: "できること"
 tags: ["製造業DX", "Claude Code", "業務システム", "データ移行", "属人化"]
 draft: false

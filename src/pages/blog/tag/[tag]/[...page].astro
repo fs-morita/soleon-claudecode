@@ -14,7 +14,7 @@ export const getStaticPaths = (async ({ paginate }) => {
   return tags.flatMap((tag) =>
     paginate(
       articles.filter((a) => a.data.tags.includes(tag)),
-      { params: { tag }, pageSize: 20 }
+      { params: { tag }, pageSize: 21 }
     )
   );
 }) satisfies GetStaticPaths;

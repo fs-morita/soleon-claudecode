@@ -1,7 +1,7 @@
 ---
 title: "固定資産台帳と現物を照合する"
 description: "台帳に載っているのに、現物がもうない。あるいはその逆。決算前の照合作業を、台帳の整理から進められます。"
-pubDate: 2026-06-08
+pubDate: 2026-07-29
 category: "できること"
 tags: ["製造業DX", "Claude Code", "経理", "固定資産", "棚卸"]
 draft: false

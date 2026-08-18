@@ -1,7 +1,7 @@
 ---
 title: "海外の規格・法規制を調べて整理する"
 description: "輸出先の規制や規格に対応できているか。公開されている情報を集めて、確認すべき点を整理できます。"
-pubDate: 2026-07-29
+pubDate: 2026-08-12
 category: "できること"
 tags: ["製造業DX", "Claude Code", "貿易", "法規制", "情報収集"]
 draft: false

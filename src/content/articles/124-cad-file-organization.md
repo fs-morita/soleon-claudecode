@@ -1,7 +1,7 @@
 ---
 title: "CADデータの置き場を整理する"
 description: "CADのファイルが個人のPCとサーバーに散らばって、どれが正なのか分からない。実態を洗い出して、置き場を決め直せます。"
-pubDate: 2026-05-27
+pubDate: 2026-07-27
 category: "できること"
 tags: ["製造業DX", "Claude Code", "設計", "ファイル整理", "データ管理"]
 draft: false

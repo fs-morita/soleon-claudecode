@@ -1,7 +1,7 @@
 ---
 title: "社内アンケートを集計する"
 description: "従業員に意見を聞いても、集計が大変で活かせていない。回答をまとめて、傾向と具体的な声を取り出せます。"
-pubDate: 2026-07-31
+pubDate: 2026-08-13
 category: "できること"
 tags: ["製造業DX", "Claude Code", "組織づくり", "アンケート", "分析"]
 draft: false

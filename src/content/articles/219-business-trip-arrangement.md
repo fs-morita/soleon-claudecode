@@ -1,7 +1,7 @@
 ---
 title: "出張の手配と精算の準備をする"
 description: "行き先と日程が決まってから、宿と交通の手配、精算の書類。付随する事務作業をまとめて片付けられます。"
-pubDate: 2026-08-03
+pubDate: 2026-08-13
 category: "できること"
 tags: ["製造業DX", "Claude Code", "総務", "出張管理", "経費精算"]
 draft: false

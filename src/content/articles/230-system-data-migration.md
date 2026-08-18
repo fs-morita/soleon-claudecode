@@ -1,7 +1,7 @@
 ---
 title: "システム間のデータの移し替えを楽にする"
 description: "販売管理から出したCSVを、会計ソフトの形式に直して取り込む。この変換作業を、毎回手作業でやっていませんか。"
-pubDate: 2026-08-10
+pubDate: 2026-08-17
 category: "できること"
 tags: ["製造業DX", "Claude Code", "データ連携", "業務効率化", "CSV"]
 draft: false

@@ -1,7 +1,7 @@
 ---
 title: "受注メールをExcelに手で転記する作業は、任せられます"
 description: "取引先ごとに形式がばらばらな注文メールを読み取り、受注一覧のExcelに追記する。営業事務が毎朝やっているこの転記作業を、Claude Codeにどこまで任せられるかを説明します。"
-pubDate: 2026-07-28
+pubDate: 2026-07-06
 category: "できること"
 tags: ["製造業DX", "Claude Code", "受注管理", "営業事務", "Excel自動化"]
 draft: false

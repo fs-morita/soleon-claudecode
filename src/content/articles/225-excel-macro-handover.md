@@ -1,7 +1,7 @@
 ---
 title: "誰も分からないExcelマクロを読み解く"
 description: "動いているけれど、中身が分からない。作った人がいないマクロを読み解いて、何をしているかを言葉にできます。"
-pubDate: 2026-08-06
+pubDate: 2026-08-14
 category: "できること"
 tags: ["製造業DX", "Claude Code", "Excel", "業務改善", "属人化"]
 draft: false

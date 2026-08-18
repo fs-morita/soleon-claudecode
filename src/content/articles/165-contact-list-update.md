@@ -1,7 +1,7 @@
 ---
 title: "社内名簿と連絡網を最新に保つ"
 description: "緊急時に連絡が取れない、退職者が名簿に残っている。名簿と連絡網を、実態に合わせて保てる形にできます。"
-pubDate: 2026-06-25
+pubDate: 2026-08-03
 category: "できること"
 tags: ["製造業DX", "Claude Code", "総務", "名簿管理", "危機管理"]
 draft: false
