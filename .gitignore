@@ -28,8 +28,3 @@ Thumbs.db
 # Claude Code local settings / temp
 .claude/settings.local.json
 .claude/*.tmp.*
-
-# X 投稿用ブラウザのログイン情報と進捗（絶対に commit しない）
-scripts/x/.browser-profile/
-scripts/x/.progress.json
-scripts/x/*.png
