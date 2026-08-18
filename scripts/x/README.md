@@ -17,10 +17,10 @@
 ## 使い方
 
 ```sh
-node scripts/x/validate.mjs      # キューの検査（文字数・記事の実在・重複）
-node scripts/x/preview.mjs 20    # これから流れる 20 本を日時つきで表示
-node scripts/x/post.mjs --dry-run        # 今の枠の 1 本を、送らずに確認
-node scripts/x/post.mjs --index 3 --dry-run  # 3 番目を確認
+npm run x:validate               # キューの検査（文字数・記事の実在・重複）
+npm run x:preview 20             # これから流れる 20 本を日時つきで表示
+npm run x:post -- --dry-run      # 今の枠の 1 本を、送らずに確認
+npm run x:post -- --index 3 --dry-run   # 3 番目を確認
 ```
 
 `validate.mjs` は PR でも自動で走る。以下を機械的に見る。
